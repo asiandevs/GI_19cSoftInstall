@@ -1,0 +1,8 @@
+- hosts: ora-x1,ora-x2
+  user: root
+ 
+  roles:
+   - racgi19c_install
+   #- racdbsoft19c_install
+   #- racdb12c_create
+   #- racdb19c_create

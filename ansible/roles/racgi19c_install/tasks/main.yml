@@ -1,0 +1,59 @@
+---
+# =============================================================================
+# Install Oracle Grid Infrastructure (GI) 19.3.0 Software Only:
+# Assumption:
+#  -  Two separate machines ( example - Ora-X1 and Ora-x2 ) are configured
+#  -  All required OS groups and users are in place
+#  -  Necessay network setup is in place 
+#  -  Oracle GI software is downloaded and staged
+# Summary Steps - 
+# (1) Install CVU 
+# (2) Unzipped Oracle GI software 
+# (3) Create response file for silent installation
+# (4) Install Oracle GI 19.3.0 Software Only in Silent Mode
+# (5) Run necessay root scripts
+# =============================================================================
+- name: display pre installation of Oracle GI software message
+  debug:
+    msg:
+      - 'This playbook is for installing Oracle RAC GI software 19c , started at {{ansible_date_time.iso8601}}:'
+
+- name: Preparation tasks for installing Oracle GI software
+  block:
+    - import_tasks:     create_dirs.yml
+    - import_tasks:     install_ntp.yml
+    - import_tasks:     racgi19c_preinstall.yml
+  become:               yes
+  become_user:          root
+  tags:
+    - gisoft_pretasks
+
+- name: Install Oracle GI software using Ansible
+  block:
+    - import_tasks: racgi19c_softinstall.yml
+    - import_tasks: racgi19c_oinsroot.yml
+    - import_tasks: racgi19c_root.yml
+  become:           yes
+  become_user:      root
+
+- name: Post Oracle GI installation tasks
+  block:
+    - import_tasks: racgi19c_ConfigTools.yml
+    - import_tasks: racgi19c_postinstall.yml
+  become:           yes
+  become_user:      root
+
+- name: Remove stage directory
+  remote_user: "{{ root_user }}"
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ stage_dir }}"
+
+- name: display post install message
+  debug:
+    msg:
+      - 'This Steps completed below task for Single Instance at {{ansible_date_time.iso8601}}:'
+      - '- Install Oracle Grid Infrastructure 19c on two node RAC cluster ora-x1 and ora-x2'
+      - '- END OF ALL: git repository GI_19cSoftInstall will be shared'

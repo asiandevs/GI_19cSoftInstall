@@ -1,0 +1,33 @@
+---
+# =============================================================================
+# Install Oracle GI 19.3.0 Software Only:
+# (1) Execute orainstRoot.sh scripts
+# =============================================================================
+- name: Execute orainstroot.sh on the node1
+  when: inventory_hostname in groups['ora-x1'] 
+  remote_user: "{{ root_user }}"
+  shell: /bin/sh "{{ ora_inventory }}/orainstRoot.sh"
+  register: gisw_orainstroonode1
+  tags:
+    - gisoftinstall_exeorainsroot
+
+- name: Output from gisw_orainstroonode1
+  when: inventory_hostname in groups['ora-x1'] 
+  debug:
+    var: gisw_orainstroonode1.stdout_lines
+    verbosity: 0
+
+- name: Execute orainstroot.sh on node2
+  when: inventory_hostname in groups['ora-x2']
+  remote_user: "{{ root_user }}"
+  shell: /bin/sh "{{ ora_inventory }}/orainstRoot.sh"
+  register: gisw_orainstroonode2
+  tags:
+    - gisoftinstall_exeorainsroot
+
+- name: Output from gisw_orainstroonode2
+  when: inventory_hostname in groups['ora-x2']
+  debug:
+    var: gisw_orainstroonode2.stdout_lines
+    verbosity: 0
+

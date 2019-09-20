@@ -1,0 +1,61 @@
+---
+# =============================================================================
+# Install Oracle GI 19.3.0 Software Only:
+# (1) Assumption: Oracle GI software is downloaded and staged
+# (2) Install cluster verification utility
+# (3) Unpack Oracle GI software to the Oracle Home directory into the first node
+# (4) Run cluster Verification Checks for CRS Installation
+# =============================================================================
+- name: copy grid 19c grid software response file to the target database server
+  remote_user: "{{ root_user }}"
+  copy: src=/etc/ansible/roles/racgi19c_install/templates/{{ item }} dest={{ stage_dir }} owner=grid group=oinstall mode=0775
+  with_items:
+    - gridsetup19c.rsp
+    - oracle-database-preinstall-19c-1.0-1.el7.x86_64.rpm
+  tags:
+    - gisoftinstall_cprspfile
+
+- name: Unpack Oracle 19c GI Software
+  when: inventory_hostname in groups['ora-x1']  
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: "{{ grid_user }}"
+  unarchive:
+     src={{ software_dir }}/LINUX.X64_193000_grid_home.zip
+     dest="{{ grid_home }}"
+     remote_src=no
+     mode=0775
+     group="{{ oracle_install_group }}"
+     owner="{{ grid_user }}"
+  tags:
+    - gisoftinstall_unpacksoft
+
+- name: install cvu rpm from a local file
+  when: inventory_hostname in groups['ora-x1']  
+  yum:
+    name: /u02/app/19.3.0/grid/cv/rpm/cvuqdisk-1.0.10-1.rpm
+    state: present
+
+- name: Transfer cvu file from ora-x1 to ora-x2
+  when: inventory_hostname in groups['ora-x1']
+  synchronize:
+    src: /u02/app/19.3.0/grid/cv/rpm/cvuqdisk-1.0.10-1.rpm
+    dest: /u02/stage/cvuqdisk-1.0.10-1.rpm
+    mode: pull
+  delegate_to: ora-x2
+
+- name: install cvu rpm from a local file
+  when: inventory_hostname in groups['ora-x2']  
+  yum:
+    name: /u02/stage/cvuqdisk-1.0.10-1.rpm
+    state: present
+
+- name: Run cluster Verification Checks for CRS Installation
+  when: inventory_hostname in groups['ora-x1']
+  become: yes
+  become_user: grid
+  command:            '{{ grid_home}}/runcluvfy.sh stage -post crsinst -n "ora-x1,ora-x2" -verbose'
+  register:           cluvfy_stage_pre_crsinst
+  failed_when:        false
+  no_log:             true
+

@@ -1,0 +1,40 @@
+---
+# =============================================================================
+# Install Oracle GI 19.3.0 Software Only:
+# (1) Install Oracle GI 19.3.0 executeConfigTools in Silent Mode
+# (2) Validate output logs 
+# =============================================================================
+- name: Install Oracle 19c GI ConfigTools in Silent Mode
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: "{{ grid_user }}"
+  shell: "{{ grid_home }}/gridSetup.sh -silent -executeConfigTools -waitforcompletion -skipStackCheck -responseFile {{ stage_dir }}/{{ gi_rspfile }} -all > /u02/stage/giconfigoutput.log"
+  args:
+      warn: false # set warn=false to prevent warning
+  failed_when: racgi_configtools_result.rc != 255   #### This condition is based on my own setup
+  register: racgi_configtools_result
+
+- name: Get the logfile name ConfigTools
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  become: yes
+  shell: "cat /u02/stage/giconfigoutput.log | grep UpdateNodeList* "
+  register: logfile
+
+- name: Get the logfile information for ConfigTools
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  become: yes
+  shell: "cat {{ logfile.stdout }} "
+  with_items:
+    - logino.log
+  args:
+    chdir: /u02/app
+  register: giexecfg
+
+- debug:
+    var: giexecfg.results[0].stdout_lines
+  when: inventory_hostname in groups['ora-x1']
+
+

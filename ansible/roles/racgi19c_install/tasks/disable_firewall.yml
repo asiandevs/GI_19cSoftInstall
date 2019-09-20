@@ -1,0 +1,19 @@
+---
+# ------------------------------------------------------------
+#            stop and disable firewall  
+# ------------------------------------------------------------
+
+- name:                 "Disable Firewall for GI Installation"
+  block:
+  
+  - name:               "Stop and disable FIREWALLD"
+    service:
+      name:             firewalld
+      enabled:          no
+      state:            stopped
+
+  become:               yes
+  become_user:          root
+  tags:                 disable_firewall
+...
+

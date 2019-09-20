@@ -1,0 +1,65 @@
+---
+# =============================================================================
+# Install Oracle GI 19.3.0 Software Only:
+# (1) Add oratab entry for ASM instances
+# (2) Validate Oracle GI cluster resources 
+# =============================================================================
+- name: Add oratab entry to first node
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  lineinfile: dest=/etc/oratab line="{{ ASMI }}1:{{ grid_home }}:Y" state=present
+
+- name: Add oratab entry to second node
+  when: inventory_hostname in groups['ora-x2']
+  remote_user: "{{ root_user }}"
+  lineinfile: dest=/etc/oratab line="{{ ASMI }}2:{{ grid_home }}:Y" state=present
+
+- name: Check CRS resources and status
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: "{{ grid_user }}"
+  shell: "{{ grid_home }}/bin/crsctl stat res -t"
+  register: crsctl_resstat
+
+- debug: var=crsctl_resstat.stdout_lines
+  when: inventory_hostname in groups['ora-x1']
+
+- name: Check cluster status
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: "{{ grid_user }}"
+  shell: "{{ grid_home }}/bin/crsctl check cluster -all"
+  register: cluster_stat
+
+- debug: var=cluster_stat.stdout_lines
+  when: inventory_hostname in groups['ora-x1']
+
+- name: Check ASM cluster mode
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: "{{ grid_user }}"
+  action: shell export GRID_HOME={{ grid_home }}; {{ grid_home }}/bin/asmcmd showclustermode
+  register: asmcluster_mode
+
+- debug: var=asmcluster_mode.stdout_lines
+  when: inventory_hostname in groups['ora-x1']
+
+- name: bash_profile for user grid
+  become: yes
+  become_user: "{{ grid_user }}"
+  blockinfile:
+    path: /home/grid/.bash_profile
+    insertafter: '#### for grid #####'
+    state: present
+    block: |
+      export PATH=$PATH:$HOME/bin
+      export PATH=/usr/bin:$PATH
+      export LD_LIBRARY_PATH=/usr/lib:/lib
+      export NLS_LANG=AMERICAN_AMERICA.UTF8
+      export NLS_DATE_FORMAT='DD-MM-YYYY:HH24:MI:SS'
+      export ORACLE_BASE="{{grid_base}}"
+      export ORACLE_HOME="{{grid_home}}"
+      export PATH=$ORACLE_HOME/bin:$PATH

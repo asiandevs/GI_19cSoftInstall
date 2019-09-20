@@ -1,0 +1,67 @@
+---
+# =============================================================================
+# Install Oracle GI 19.3.0 Software Only:
+# (1) Execute root.sh scripts
+# =============================================================================
+- name: Execute root.sh on the first node
+  when: inventory_hostname in groups['ora-x1'] 
+  remote_user: "{{ root_user }}"
+  become: yes
+  shell: "{{ grid_home }}/root.sh"
+  register: rootnode1
+  tags:
+    - gisoftinstall_exeroot
+
+- name: Get the logfile name on the first node
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  become: yes
+  shell: "echo {{ rootnode1.stdout }} | grep -oP '(?<=Check).*?(?=for)' "
+  register: logfile
+
+- name: Get the logfile information on the first node
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  become: yes
+  shell: "cat {{ logfile.stdout }} "
+  with_items:
+    - logino.log
+  args:
+    chdir: /u01/app
+  register: rootloginfon1
+
+- debug:
+    var: rootloginfon1.results[0].stdout_lines
+  when: inventory_hostname in groups['ora-x1']
+
+- name: Execute root.sh on the second node
+  when: inventory_hostname in groups['ora-x2'] 
+  remote_user: "{{ root_user }}"
+  become: yes
+  shell: "{{ grid_home }}/root.sh"
+  register: rootnode2
+  tags:
+    - gisoftinstall_exeroot
+
+- name: Get the logfile information on the second node
+  when: inventory_hostname in groups['ora-x2']
+  remote_user: "{{ root_user }}"
+  become: yes
+  shell: "echo {{ rootnode2.stdout }} | grep -oP '(?<=Check).*?(?=for)' "
+  register: logfile
+
+- name: Get the logfile information on the second node
+  when: inventory_hostname in groups['ora-x2']
+  remote_user: "{{ root_user }}"
+  become: yes
+  shell: "cat {{ logfile.stdout }} "
+  with_items:
+    - logino.log
+  args:
+    chdir: /u01/app
+  register: rootloginfon2
+
+- debug:
+    var: rootloginfon2.results[0].stdout_lines
+  when: inventory_hostname in groups['ora-x2']
+
