@@ -1,0 +1,34 @@
+---
+- name: RACDBSOFT_INSTALL | Create silent response file from template
+  when: inventory_hostname in groups['ora-x1']
+  template: src={{ dbsoft19c_rsp }}.j2 dest={{ stage_dir }}/{{ dbsoft19c_rsp }} owner=oracle group=oinstall mode=0775
+
+- debug: msg="Installing Oracle Database Software - {{ oracle_home }}"
+  when: oracle_home not in dbsoft_install_check.stdout_lines
+
+- name: RACDBSOFT_INSTALL | Install Oracle 19c Database Software
+  when: inventory_hostname in groups['ora-x1'] and oracle_home not in dbsoft_install_check.stdout_lines
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: "{{ oracle_user }}"
+  shell: "{{ oracle_home}}/runInstaller -ignorePrereq -waitforcompletion -silent -responseFile {{ stage_dir }}/{{ dbsoft19c_rsp }} > /u02/stage/dbinstalloutput.log"
+  args:
+      warn: false # set warn=false to prevent warning
+  failed_when: racdbsoft_install_result.rc != 6   #### This condition is based on my own setup
+  register: racdbsoft_install_result
+  no_log:             true
+
+- name: RACDBSOFT_INSTALL | Get the output log status
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: oracle
+  when: inventory_hostname in groups['ora-x1']
+  shell: grep -r "Successfully Setup Software with *" /u02/stage/dbinstalloutput.log
+  register: racdbsoftinstall_log
+
+- name: RACDBSOFT_INSTALL | Output from Post Database Software Installation Check
+  debug:
+    var: racdbsoftinstall_log.stdout
+    verbosity: 0
+  when: inventory_hostname in groups['ora-x1'] and "'Successfully Setup Software.' or 'Successfully Setup Software with warning(s).' in racdbsoftinstall_log.stdout"
+

@@ -1,0 +1,27 @@
+---
+- name: RACDBSOFT_INSTALL | Get Database database and patch versions
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: oracle
+  shell: 'opatch lsinventory|grep "Oracle Database" > {{stage_dir}}/output.log'
+  environment: "{{ opatchenv }}"
+
+- name: Get Database database and patch versions
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: oracle
+  shell: 'opatch lsinventory|grep "Patch description" >> {{stage_dir}}/output.log'
+  environment: "{{ opatchenv }}"
+  register: dbversionoutput
+
+- name: output for database software and Patch information 
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: oracle
+  shell: cat {{stage_dir}}/output.log
+  register: dbsoftinfo
+
+- name: "Output from Post Database Software Installation Check"
+  debug:
+    var: dbsoftinfo.stdout_lines|map('trim')|list
+

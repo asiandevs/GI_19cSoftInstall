@@ -1,0 +1,41 @@
+---
+# =====================================================================================
+# Install Oracle Database 19.3 software for RAC using Ansible:
+# Summary Steps: 
+# (1) Check if Binaries are already installed
+# (2) Create required directories
+# (3) Unpack Oracle 19c Database Software from the local drive
+# (4) Create silent response file from template
+# (5) Install Oracle 19c Database Software for RAC
+# (6) Execute root.sh on primary node and then other nodes
+# (7) Remove stage directory
+# =====================================================================================
+
+- name: display pre installation of database software message
+  debug:
+    msg:
+      - 'This playbook is for installing Oracle RAC database software 19c at {{ansible_date_time.iso8601}}:'
+
+- name:    Install Oracle Database software (RAC) using Ansible
+  block:
+    - import_tasks: racdbsoft19c_presoftinstall.yml
+    - import_tasks: racdbsoft19c_softinstall.yml
+    - import_tasks: racdbsoft19c_exerootn1.yml
+    - import_tasks: racdbsoft19c_exerootn2.yml
+    - import_tasks: racdbsoft19c_installvalidate.yml
+  become:           yes
+  become_user:      root
+    
+- name: Remove stage directory
+  remote_user: "{{ root_user }}"
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ stage_dir }}"
+
+- name: display post install message
+  debug:
+    msg:
+      - 'This Steps completed below task for RAC database at {{ansible_date_time.iso8601}}:'
+      - 'Install of Oracle 19c Oracle RAC Database Software task is completed successfully in Silent Mode'

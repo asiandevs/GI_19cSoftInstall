@@ -1,0 +1,30 @@
+---
+- name: RACDBSOFT_INSTALL | Execute root.sh on node2
+  when: inventory_hostname in groups['ora-x2']
+  remote_user: "{{ root_user }}"
+  shell: "{{ oracle_home }}/root.sh -silent > {{ stage_dir }}/dbsoftinstallrootn2.log"
+  register: racdbrootlogn2
+  tags:
+   - db19c_exeroot
+
+- name: output log file name
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: oracle
+  when: inventory_hostname in groups['ora-x2']
+  shell: cat {{ stage_dir }}/dbsoftinstallrootn2.log | awk -v FS="(Check|for)" '{print $2}'
+  register: loginfon2
+
+- set_fact:
+    loginfon2={{ loginfon2.stdout }}
+  when: inventory_hostname in groups['ora-x2']
+
+- name: Get root.sh output for node2.
+  when: inventory_hostname in groups['ora-x2']
+  shell: cat {{ loginfon2 }}
+  register: logdatan2
+
+- debug:
+    msg: "{{ logdatan2.stdout_lines|map('trim')|list }}"
+  when: inventory_hostname in groups['ora-x2']
+

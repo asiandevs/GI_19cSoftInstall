@@ -1,0 +1,20 @@
+oracle_user:                     "oracle"
+oracle_install_group:            "oinstall"
+softstage_dir:                   "/u01/stage"
+stage_dir:                       "/u02/stage"
+scripts_directory:               "{{ stage_dir }}/scripts"
+oracle_base:                     /u02/app/oracle
+oracle_inventory:                "/u02/app/oraInventory"
+oracle_home:                     "{{ oracle_base }}/product/19.3.0/db300"
+grid_user: 			 grid
+root_user: 			 root
+dbsoft19c_rsp: 			 dbsoft19c.rsp
+oracle_home_name:                "RDBMS193"
+Installedition:                  EE
+DBA_GROUP:                       dba
+OPER_GROUP:                      oper
+OSOTHERS_GROUP:                  oinstall
+NODES:                           ora-x1,ora-x2
+opatchenv:
+      ORACLE_HOME: "{{ oracle_home }}"
+      PATH: "{{ oracle_home}}/OPatch:$PATH:/usr/local/bin:/bin:/sbin:/usr/bin:/usr/sbin"

@@ -1,0 +1,52 @@
+---
+- name: RACDBSOFT_INSTALL | Check if Binaries are already installed
+  shell: grep "={{ oracle_home_name }}" {{ oracle_inventory }}/ContentsXML/inventory.xml
+  register: dbsoft_install_check
+  failed_when: false
+
+- name: RACDBSOFT_INSTALL | Create required directories
+  when: inventory_hostname in groups['dbservers']
+  remote_user: "{{ root_user }}"
+  file:
+    path="{{ item }}"
+    state=directory
+    owner="{{ oracle_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0775
+  with_items:
+    - "{{ scripts_directory }}"
+    - "{{ oracle_base }}"
+    - "{{ stage_dir }}"
+    - "{{ oracle_home }}"
+
+- name: RACDBSOFT_INSTALL | copy database pre install  19c rpm pfile to the target database server
+  remote_user: "{{ root_user }}"
+  copy: src=/etc/ansible/roles/racdbsoft19c_install/templates/{{ item }} dest={{ stage_dir }} owner=grid group=oinstall mode=0775
+  with_items:
+    - oracle-database-preinstall-19c-1.0-1.el7.x86_64.rpm
+
+- name: RACDBSOFT_INSTALL | install predbinstall rpm from a local file
+  when: inventory_hostname in groups['ora-x1']
+  yum:
+    name: /u02/stage/oracle-database-preinstall-19c-1.0-1.el7.x86_64.rpm
+    state: present
+
+- name: RACDBSOFT_INSTALL | install predbinstall rpm from a local file
+  when: inventory_hostname in groups['ora-x2']
+  yum:
+    name: /u02/stage/oracle-database-preinstall-19c-1.0-1.el7.x86_64.rpm
+    state: present
+
+- name: RACDBSOFT_INSTALL | Unpack Oracle 19c Database Software
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: "{{ oracle_user }}"
+  unarchive:
+     src={{ softstage_dir }}/LINUX.X64_193000_db_home.zip
+     dest="{{ oracle_home }}"
+     remote_src=no
+     mode=0775
+     group="{{ oracle_install_group }}"
+     owner="{{ oracle_user }}"
+

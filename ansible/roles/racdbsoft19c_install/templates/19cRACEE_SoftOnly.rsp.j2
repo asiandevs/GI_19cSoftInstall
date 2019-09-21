@@ -1,0 +1,23 @@
+oracle.install.responseFileVersion=/oracle/install/rspfmt_dbinstall_response_schema_v19.0.0
+oracle.install.option=INSTALL_DB_SWONLY
+UNIX_GROUP_NAME=oinstall
+SELECTED_LANGUAGES={{ ORA_LANGUAGES }}
+INVENTORY_LOCATION={{ oracle_inventory }}
+ORACLE_HOME={{ oracle_home }}
+ORACLE_BASE={{ oracle_base }}
+oracle.install.db.InstallEdition=EE
+oracle.install.db.OSDBA_GROUP=dba
+oracle.install.db.OSOPER_GROUP=oper
+oracle.install.db.OSBACKUPDBA_GROUP=oinstall
+oracle.install.db.OSDGDBA_GROUP=oinstall
+oracle.install.db.OSKMDBA_GROUP=oinstall
+oracle.install.db.OSRACDBA_GROUP=dba
+oracle.install.db.CLUSTER_NODES={{ ora-x1,ora-x2 }}
+oracle.install.db.isRACOneInstall=false 
+oracle.install.db.rac.serverpoolCardinality=0 
+oracle.install.db.config.starterdb.type=GENERAL_PURPOSE
+oracle.install.db.ConfigureAsContainerDB=false 
+SECURITY_UPDATES_VIA_MYORACLESUPPORT=false
+DECLINE_SECURITY_UPDATES=true
+oracle.installer.autoupdates.option=SKIP_UPDATES
+

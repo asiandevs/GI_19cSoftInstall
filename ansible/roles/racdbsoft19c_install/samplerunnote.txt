@@ -1,0 +1,181 @@
+[root@oel75 ansible]# ansible-playbook oracleGInRAC19cR3.yml
+
+PLAY [ora-x1,ora-x2] *************************************************************************
+
+TASK [Gathering Facts] ***********************************************************************
+ok: [192.168.56.103]
+ok: [192.168.56.102]
+
+TASK [racdbsoft19c_install : display pre installation of database software message] **********
+ok: [192.168.56.102] => {
+    "msg": [
+        "This playbook is for installing Oracle RAC database software 19c at 2019-09-19T21:04:  51Z:"
+    ]
+}
+ok: [192.168.56.103] => {
+    "msg": [
+        "This playbook is for installing Oracle RAC database software 19c at 2019-09-20T21:58:  49Z:"
+    ]
+}
+
+TASK [racdbsoft19c_install : RACDBSOFT_INSTALL | Check if Binaries are already installed] ****
+changed: [192.168.56.103]
+changed: [192.168.56.102]
+
+TASK [racdbsoft19c_install : RACDBSOFT_INSTALL | Create required directories] ****************
+changed: [192.168.56.103] => (item=/u02/stage/scripts)
+changed: [192.168.56.102] => (item=/u02/stage/scripts)
+ok: [192.168.56.103] => (item=/u02/app/oracle)
+ok: [192.168.56.102] => (item=/u02/app/oracle)
+ok: [192.168.56.103] => (item=/u02/stage)
+ok: [192.168.56.102] => (item=/u02/stage)
+changed: [192.168.56.103] => (item=/u02/app/oracle/product/19.3.0/db300)
+changed: [192.168.56.102] => (item=/u02/app/oracle/product/19.3.0/db300)
+
+TASK [racdbsoft19c_install : RACDBSOFT_INSTALL | copy database pre install  19c rpm pfile to t  he target database server] ***
+changed: [192.168.56.103] => (item=oracle-database-preinstall-19c-1.0-1.el7.x86_64.rpm)
+changed: [192.168.56.102] => (item=oracle-database-preinstall-19c-1.0-1.el7.x86_64.rpm)
+
+TASK [racdbsoft19c_install : RACDBSOFT_INSTALL | install predbinstall rpm from a local file] *  **
+ok: [192.168.56.102]
+
+TASK [racdbsoft19c_install : RACDBSOFT_INSTALL | install predbinstall rpm from a local file] *  **
+ok: [192.168.56.103]
+
+TASK [racdbsoft19c_install : RACDBSOFT_INSTALL | Unpack Oracle 19c Database Software] ********
+changed: [192.168.56.102]
+
+TASK [racdbsoft19c_install : RACDBSOFT_INSTALL | Create silent response file from template] **  *
+changed: [192.168.56.102]
+
+TASK [racdbsoft19c_install : debug] **********************************************************
+ok: [192.168.56.102] => {
+    "msg": "Installing Oracle Database Software - /u02/app/oracle/product/19.3.0/db300"
+}
+ok: [192.168.56.103] => {
+    "msg": "Installing Oracle Database Software - /u02/app/oracle/product/19.3.0/db300"
+}
+
+TASK [racdbsoft19c_install : RACDBSOFT_INSTALL | Install Oracle 19c Database Software] *******
+changed: [192.168.56.102]
+
+TASK [racdbsoft19c_install : RACDBSOFT_INSTALL | Get the output log status] ******************
+changed: [192.168.56.102]
+
+TASK [racdbsoft19c_install : RACDBSOFT_INSTALL | Output from Post Database Software Installati  on Check] ***
+ok: [192.168.56.102] => {
+    "racdbsoftinstall_log.stdout": "Successfully Setup Software with warning(s)."
+}
+
+TASK [racdbsoft19c_install : RACDBSOFT_INSTALL | Execute root.sh on node1] *******************
+changed: [192.168.56.102]
+
+TASK [racdbsoft19c_install : output log file name] *******************************************
+changed: [192.168.56.102]
+
+TASK [racdbsoft19c_install : set_fact] *******************************************************
+ok: [192.168.56.102]
+
+TASK [racdbsoft19c_install : Get root.sh output for node1.] **********************************
+changed: [192.168.56.102]
+
+TASK [racdbsoft19c_install : debug] **********************************************************
+ok: [192.168.56.102] => {
+    "msg": [
+        "Performing root user operation.",
+        "",
+        "The following environment variables are set as:",
+        "ORACLE_OWNER= oracle",
+        "ORACLE_HOME=  /u02/app/oracle/product/19.3.0/db300",
+        "Copying dbhome to /usr/local/bin ...",
+        "Copying oraenv to /usr/local/bin ...",
+        "Copying coraenv to /usr/local/bin ...",
+        "",
+        "Entries will be added to the /etc/oratab file as needed by",
+        "Database Configuration Assistant when a database is created",
+        "Finished running generic part of root script.",
+        "Now product-specific root actions will be performed."
+    ]
+}
+
+TASK [racdbsoft19c_install : RACDBSOFT_INSTALL | Execute root.sh on node2] *******************
+changed: [192.168.56.103]
+
+TASK [racdbsoft19c_install : output log file name] *******************************************
+changed: [192.168.56.103]
+
+TASK [racdbsoft19c_install : set_fact] *******************************************************
+ok: [192.168.56.103]
+
+TASK [racdbsoft19c_install : Get root.sh output for node2.] **********************************
+changed: [192.168.56.103]
+
+TASK [racdbsoft19c_install : debug] **********************************************************
+ok: [192.168.56.103] => {
+    "msg": [
+        "Performing root user operation.",
+        "",
+        "The following environment variables are set as:",
+        "ORACLE_OWNER= oracle",
+        "ORACLE_HOME=  /u02/app/oracle/product/19.3.0/db300",
+        "Copying dbhome to /usr/local/bin ...",
+        "Copying oraenv to /usr/local/bin ...",
+        "Copying coraenv to /usr/local/bin ...",
+        "",
+        "Entries will be added to the /etc/oratab file as needed by",
+        "Database Configuration Assistant when a database is created",
+        "Finished running generic part of root script.",
+        "Now product-specific root actions will be performed."
+    ]
+}
+
+TASK [racdbsoft19c_install : RACDBSOFT_INSTALL | Get Database database and patch versions] ***
+changed: [192.168.56.103]
+changed: [192.168.56.102]
+
+TASK [racdbsoft19c_install : Get Database database and patch versions] ***********************
+changed: [192.168.56.103]
+changed: [192.168.56.102]
+
+TASK [racdbsoft19c_install : output for database software and Patch information] *************
+changed: [192.168.56.102]
+changed: [192.168.56.103]
+
+TASK [racdbsoft19c_install : Output from Post Database Software Installation Check] **********
+ok: [192.168.56.102] => {
+    "dbsoftinfo.stdout_lines|map('trim')|list": [
+        "Oracle Database 19c                                                  19.0.0.0.0",
+        "Patch description:  \"OCW RELEASE UPDATE 19.3.0.0.0 (29585399)\"",
+        "Patch description:  \"Database Release Update : 19.3.0.0.190416 (29517242)\""
+    ]
+}
+ok: [192.168.56.103] => {
+    "dbsoftinfo.stdout_lines|map('trim')|list": [
+        "Oracle Database 19c                                                  19.0.0.0.0",
+        "Patch description:  \"OCW RELEASE UPDATE 19.3.0.0.0 (29585399)\"",
+        "Patch description:  \"Database Release Update : 19.3.0.0.190416 (29517242)\""
+    ]
+}
+
+TASK [racdbsoft19c_install : Remove stage directory] *****************************************
+changed: [192.168.56.102] => (item=/u02/stage)
+changed: [192.168.56.103] => (item=/u02/stage)
+
+TASK [racdbsoft19c_install : display post install message] ***********************************
+ok: [192.168.56.102] => {
+    "msg": [
+        "This Steps completed below task for RAC database at 2019-09-19T21:04:51Z:",
+        "Install of Oracle 19c Oracle RAC Database Software task is completed successfully in   Silent Mode"
+    ]
+}
+ok: [192.168.56.103] => {
+    "msg": [
+        "This Steps completed below task for RAC database at 2019-09-20T21:58:49Z:",
+        "Install of Oracle 19c Oracle RAC Database Software task is completed successfully in   Silent Mode"
+    ]
+}
+
+PLAY RECAP ***********************************************************************************
+192.168.56.102             : ok=23   changed=14   unreachable=0    failed=0
+192.168.56.103             : ok=18   changed=10   unreachable=0    failed=0
+
