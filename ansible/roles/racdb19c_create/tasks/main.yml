@@ -1,0 +1,38 @@
+---
+# =====================================================================================
+# Create Oracle Database 19.3 RAC database using Ansible:
+# =====================================================================================
+- name: display pre database create message
+  debug:
+    msg:
+      - 'This playbook is for creating Oracle RAC database at {{ansible_date_time.iso8601}}:'
+
+- name: Precheck before creating Oracle Database using Ansible
+  block:
+    - import_tasks: rac19c_predbsoftchk.yml
+    - import_tasks: racdb19c_pretemplatecreate.yml
+  become:           yes
+  become_user:      root
+
+- name: Create a RAC Database and validate
+  block:
+    - import_tasks: racdb19c_createdb.yml
+    - import_tasks: racdb19c_postdbcreate.yml
+    - import_tasks: racdb19c_createdbstatus.yml
+  become:           yes
+  become_user:      root
+
+- name: Remove stage directory
+  remote_user: "{{ root_user }}"
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ stage_dir }}"
+
+- name: display post database create message
+  debug:
+    msg:
+      - 'This Steps completed below task for RAC database at {{ansible_date_time.iso8601}}:'
+      - 'Oracle 19c Oracle RAC Database task completed successfully in Silent Mode'
+      - 'END OF ALL: git repository of "racdb19c_create" will be shared'

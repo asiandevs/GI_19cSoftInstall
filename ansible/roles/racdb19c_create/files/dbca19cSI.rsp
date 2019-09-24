@@ -1,0 +1,16 @@
+responseFileVersion=/oracle/assistants/rspfmt_dbca_response_schema_v19.0.0
+gdbName={{ cdb_name }}
+sid={{ cdb_name }}
+databaseConfigType={{ dbconfig_type }}
+createAsContainerDatabase={{ container_db }}
+templateName={{ template_name }}
+sysPassword={{ syspass }}
+systemPassword={{ syspass }} 
+emExpressPort=5500
+datafileDestination={{ dbfile_path }}
+storageType={{ db_storage_type }}
+characterSet=AL32UTF8
+listeners={{ lsnr_name }}
+databaseType=MULTIPURPOSE
+automaticMemoryManagement=false
+totalMemory={{ totalMemory }}

@@ -1,0 +1,5 @@
+export ORACLE_SID={{ db_name }}1
+export ORACLE_HOME={{ oracle_home }}
+export PATH=$PATH:$ORACLE_HOME/bin
+orapwd file={{ oracle_home }}/dbs/orapw{{ db_name }} password={{ syspwd }} force=y ignorecase=n
+

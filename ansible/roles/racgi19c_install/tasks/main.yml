@@ -20,7 +20,7 @@
 
 - name: Preparation tasks for installing Oracle GI software
   block:
-    - import_tasks:     create_dirs.yml
+    - import_tasks:     create_required_dirs.yml
     - import_tasks:     install_ntp.yml
     - import_tasks:     racgi19c_preinstall.yml
   become:               yes

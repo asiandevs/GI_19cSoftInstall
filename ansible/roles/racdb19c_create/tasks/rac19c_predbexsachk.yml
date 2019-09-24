@@ -1,0 +1,35 @@
+---
+- name: Check Database existence-N1
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: "{{ grid_user }}"
+  shell: /u02/app/19.3.0/grid/bin/crsctl stat res -w "(TYPE = ora.database.type) and (NAME = ora.{{db_name}}.db)" | wc -l
+  register: instance_checkn1
+
+- name: print results
+  when: inventory_hostname in groups['ora-x1']
+  debug:
+    var: instance_checkn1
+
+- name: Check if database instance exists-N1
+  fail: msg=" --- Database instance already exists --- "
+  when: inventory_hostname in groups['ora-x1'] and instance_checkn1.stdout != "0"
+
+- name: Check Database existence-N2
+  when: inventory_hostname in groups['ora-x2']
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: "{{ grid_user }}"
+  shell: /u02/app/19.3.0/grid/bin/crsctl stat res -w "(TYPE = ora.database.type) and (NAME = ora.{{db_name}}.db)" | wc -l
+  register: instance_checkn2
+
+- name: print results
+  when: inventory_hostname in groups['ora-x2']
+  debug:
+    var: instance_checkn2
+
+- name: Check if database instance exists-N2
+  fail: msg=" --- Database instance already exists --- "
+  when: inventory_hostname in groups['ora-x2'] and instance_checkn2.stdout != "0"
+

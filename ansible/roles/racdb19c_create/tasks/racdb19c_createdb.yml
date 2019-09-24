@@ -1,0 +1,33 @@
+---
+- name: Create a RAC Database
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: "{{ oracle_user }}"
+  shell: '{{ oracle_home }}/bin/dbca -silent -createDatabase -ignorePreReqs -responseFile {{ stage_dir }}/{{ dbrac19c_rsp }}'
+  environment: "{{ env_db }}"
+  ignore_errors: True
+
+- name: output log of database creation
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: oracle
+  shell: cat {{oracle_base}}/cfgtoollogs/dbca/{{db_unqname}}/{{db_unqname}}.log
+  register: dbcreateloginfo
+
+- name: "Output from Database Creation"
+  when: inventory_hostname in groups['ora-x1']
+  debug:
+    var: dbcreateloginfo.stdout_lines|map('trim')|list
+
+- name: Add oratab entry to first node
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  lineinfile: dest='/etc/oratab' regexp='^{{ oracle_sid }}1:{{ oracle_home }}:N' line='{{ oracle_sid }}1:{{ oracle_home }}:Y'
+
+- name: Add oratab entry to second node
+  when: inventory_hostname in groups['ora-x2']
+  remote_user: "{{ root_user }}"
+  lineinfile: dest='/etc/oratab' regexp='^{{ oracle_sid }}2:{{ oracle_home }}:N' line='{{ oracle_sid }}2:{{ oracle_home }}:Y'
+

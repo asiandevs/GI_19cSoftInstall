@@ -1,0 +1,55 @@
+---
+- name: Create required directories
+  when: inventory_hostname in groups['dbservers']
+  remote_user: "{{ root_user }}"
+  file:
+    path="{{ item }}"
+    state=directory
+    owner="{{ oracle_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0775
+  with_items:
+    - "{{ stage_dir }}"
+    - "{{ dbfile_path }}"
+
+- name: create a new file for testing
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: "{{ oracle_user }}"
+  file:
+    dest: "{{ oracle_home }}/dbs/init{{ oracle_sid }}1.ora"
+    state: touch
+
+- name: create a silent database response file
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: "{{ oracle_user }}"
+  template: src=templates/dbrac19c_rsp.j2 dest={{ stage_dir }}/dbrac19c.rsp owner=oracle group=oinstall mode=0775
+  register: silent_racdbsrpfile
+
+- name: Create_RACDB | template for compatible
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  template: src=roles/racdb19c_create/templates/setup_compatible.sh.j2 dest={{ stage_dir }}/setup_compatible.sh mode=0775 owner="{{ oracle_user }}" group="{{ oracle_install_group }}" force=yes 
+
+- name: Create_RACDB | template for create password file
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  template: src=roles/racdb19c_create/templates/orapwd.sh.j2 dest={{ stage_dir }}/orapwd.sh mode=0775 owner="{{ oracle_user }}" group="{{ oracle_install_group }}" force=yes 
+
+- name: Create_RACDB | template db createfile
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  template: src=roles/racdb19c_create/templates/check_spfile_path.sh.j2 dest={{ stage_dir }}/check_spfile_path.sh mode=0775 owner="{{ oracle_user }}" group="{{ oracle_install_group }}" force=yes 
+
+- name: Create_RACDB | template for spfile information
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  template: src=roles/racdb19c_create/templates/setup_spfile.sh.j2 dest={{ stage_dir }}/setup_spfile.sh mode=0775 owner="{{ oracle_user }}" group="{{ oracle_install_group }}" force=yes 
+
+- name: Create_RACDB | template for remote listener file
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  template: src=roles/racdb19c_create/templates/silent-lsnr19c-config.rsp.j2 dest={{ stage_dir }}/setup_remlsnr.sh mode=0775 owner="{{ oracle_user }}" group="{{ oracle_install_group }}" force=yes 

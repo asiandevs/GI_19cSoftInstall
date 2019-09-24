@@ -1,0 +1,61 @@
+---
+- name: Create required directories
+  when: inventory_hostname in groups['dbservers']
+  remote_user: "{{ root_user }}"
+  file:
+    path="{{ item }}"
+    state=directory
+    owner="{{ oracle_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0775
+  with_items:
+    - "{{ stage_dir }}"
+    - "{{ dbfile_path }}"
+
+- name: create an init parameter file for the instance
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: "{{ oracle_user }}"
+  file:
+    dest: "{{ oracle_home }}/dbs/init{{ oracle_sid }}1.ora"
+    state: touch
+
+- name: create a silent database install file
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: "{{ oracle_user }}"
+  template: src=templates/dbrac19c_rsp.j2 dest={{ stage_dir }}/dbrac19c.rsp owner=oracle group=oinstall mode=0775
+  register: silent_racdbsrpfile
+
+- name:  template for setting up compatible parameter
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: "{{ oracle_user }}"
+  template: src=templates/setup_compatible.sh.j2 dest={{ stage_dir }}/setup_compatible.sh owner=oracle group=oinstall mode=0775
+
+- name:  template to get the spfile path
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: "{{ oracle_user }}"
+  template: src=templates/setup_db_crefile_dest.sh.j2 dest={{ stage_dir }}/setup_db_crefile_dest.sh owner=oracle group=oinstall mode=0775
+
+- name: Copy database SQL script to the target database server
+  when: inventory_hostname in groups['ora-x1']
+  copy: src=roles/racdb19c_create/files/{{ item }} dest={{ stage_dir }} owner=oracle group=oinstall mode=0775 force=yes
+  with_items:
+    - chk_version.sql
+
+- name: Create_RACDB | Template Setup compatible Parameter
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  template:
+    src=roles/racdb19c_create/templates/setup_compatible.sh.j2
+    dest={{ stage_dir }}/setup_compatible.sh
+    owner="{{ oracle_user }}"
+    group="{{ oracle_install_group }}"
+    mode=0775
+

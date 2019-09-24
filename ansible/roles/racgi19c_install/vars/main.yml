@@ -15,7 +15,7 @@ root_user: root
 ora_inventory: /u02/app/oraInventory
 ora_language:      en
 install_option:     CRS_SWONLY
-oracle_base:        /u02/app/grid
+oracle_base:        /u02/app/oracle
 oracle_home:        /u02/app/19.3.0/grid
 #### SECTION B - GROUPS ############
 dba_grp: dba

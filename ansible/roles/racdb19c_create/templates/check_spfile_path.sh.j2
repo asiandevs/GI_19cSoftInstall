@@ -1,0 +1,12 @@
+export ORACLE_SID={{ oracle_sid }}1
+export ORACLE_HOME={{ oracle_home }}
+export PATH=$PATH:$ORACLE_HOME/bin
+
+sqlplus -s / as sysdba << EOF
+set pages 0
+set feed off
+select value
+from v\$parameter
+where name = 'db_create_file_dest';
+exit
+EOF

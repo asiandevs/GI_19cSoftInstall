@@ -1,0 +1,34 @@
+oracle_user:                     "oracle"
+root_user:                       "root"
+oracle_install_group:            "oinstall"
+stage_dir:                       "/u02/stage"
+oracle_base:                     "/u02/app/oracle"
+oracle_inventory:                "/u02/app/oraInventory"
+oracle_home:                     "{{ oracle_base }}/product/19.3.0/db300"
+oracle_home_name:                "OraDB19Home1"
+grid_home:                       "/u02/app/19.3.0/grid"
+silent_listener_config_file:     "{{ stage_dir }}/silent-lsnr19c-config.rsp"
+dbfile_path:                     "{{ oracle_base }}/oradata/"
+dbrac19c_rsp: dbrac19c.rsp
+oracle_sid: eaymd
+oracle_sid2: eaymd2
+instancevw: "v$instance"
+asm_instance: "+ASM1"
+grid_user: grid
+db_unqname: eaymd
+db_name : eaymd
+cdb_name: eaymd
+dbsnmppwd : "Oracle123"
+systempwd : "Oracle123"
+syspwd : "Moral#Love_13"
+oratab : /etc/oratab
+spfile : spfile
+env_db:
+  ORACLE_HOME: "{{ oracle_home }}"
+  ORACLE_BASE: "{{ oracle_base }}"
+  ORACLE_SID: "{{ oracle_sid }}1"
+  PATH: "{{ oracle_home }}/bin:{{ oracle_home }}/OPatch:$PATH:/bin:/usr/bin:/usr/local/bin:/usr/ccs/bin:/usr/sbin"
+env_grid:
+  ORACLE_HOME: "{{ grid_home }}"
+  ORACLE_SID: "{{ asm_instance }}"
+  PATH: "{{ grid_home }}/bin:{{ grid_home }}/OPatch:$PATH:/bin:/usr/bin:/usr/local/bin:/usr/ccs/bin:/usr/sbin"

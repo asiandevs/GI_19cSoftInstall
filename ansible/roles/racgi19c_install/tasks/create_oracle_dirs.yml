@@ -1,0 +1,16 @@
+---
+- name: create required directories
+  when: inventory_hostname in groups['dbservers']
+  remote_user: "{{ root_user }}"
+  file:
+    path="{{ item }}"
+    state=directory
+    owner="{{ oracle_user }}"
+    group="{{ oracle_install_group }}"
+    recurse=yes
+    mode=0775
+  with_items:
+    - "{{ oracle_base }}"
+  tags:
+    - gisoftinstall_credits
+

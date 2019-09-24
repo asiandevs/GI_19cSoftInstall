@@ -1,0 +1,6 @@
+---
+- name: create grid required directories
+  include_tasks: create_grid_dirs.yml
+
+- name: create oracle required directories
+  include_tasks: create_oracle_dirs.yml

@@ -1,0 +1,41 @@
+---
+- name: Create_RACDB | Stop cluster database 
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  become: true
+  become_user: "{{ oracle_user }}"
+  shell: srvctl stop database -d {{ db_unqname }}
+  environment: "{{ env_db }}"
+
+- name: Create_RACDB | Start cluster database 
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: "{{ oracle_user }}"
+  shell: srvctl start database -d {{ db_unqname }}
+  environment: "{{ env_db }}"
+
+- name: Create_Database | create pfile
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: "{{ oracle_user }}"
+  when: inventory_hostname in groups['ora-x1']
+  shell: export ORACLE_HOME={{ oracle_home }}; export ORACLE_SID={{ db_unqname }}1; export PATH=$PATH:$ORACLE_HOME/bin; echo "{{ item }};" | {{ oracle_home }}/bin/sqlplus / as sysdba
+  register: sqlplus_dpfile
+  with_items:
+    - create pfile from spfile
+
+- name: Create_RACDB | Start cluster database 
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: "{{ oracle_user }}"
+  shell: srvctl status database -d {{ db_unqname }}
+  environment: "{{ env_db }}"
+  register: database_status
+
+- name: print database status
+  when: inventory_hostname in groups['ora-x1']
+  debug:
+    var: database_status.stdout_lines|map('trim')|list
+

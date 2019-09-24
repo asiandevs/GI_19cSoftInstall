@@ -1,0 +1,21 @@
+---
+
+oracle_home: "{{ oracle_home}}"
+  oracle_databases:                                            # Dictionary describing the databases to be installed
+        - home: db1                                            # 'Last' directory in ORACLE_HOME path (e.g /u01/app/oracle/12.1.0.2/racdb)
+          oracle_version_db: 18.3.0.1                          # Oracle versiono
+          oracle_edition: EE                                   # The edition of database-server (EE,SE,SEONE)
+          oracle_db_name: "{{ cdb_name }}"                                 # Database name
+          oracle_db_type: SI                                   # Type of database (RAC,RACONENODE,SI)
+          is_container: true                                  # (true/false) Is the database a container database
+          pdb_prefix: pdb
+          num_pdbs: 1
+          storage_type: FS                                     # Database storage to be used. ASM or FS.
+          service_name: chumkisrv                              # Inital service to be created (not in use yet)
+          oracle_init_params: ""                               # Specific parameters to be set during installation. Comma-separated list
+          oracle_db_mem_totalmb: 1400                          # Amount of RAM to be used for SGA + PGA
+          oracle_database_type: MULTIPURPOSE                   # MULTIPURPOSE|DATA_WAREHOUSING|OLTP
+          redolog_size_in_mb: 100
+          listener_name: LISTENER
+          state: present                                        # present | absent
+

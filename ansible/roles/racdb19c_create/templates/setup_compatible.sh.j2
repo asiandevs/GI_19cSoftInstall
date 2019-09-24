@@ -1,0 +1,19 @@
+export ORACLE_SID={{ oracle_sid }}1
+export ORACLE_HOME={{ oracle_home }}
+export PATH=$PATH:$ORACLE_HOME/bin
+
+sqlplus -s / as sysdba << EOF
+set pages 0
+set feed off
+select version from v\$instance;
+exit
+EOF
+cd {{ stage_dir }}
+sqlplus -s <<EOF
+/ as sysdba
+set heading off
+
+select d.name||','||i.instance_name||','||i.host_name||';' from v\$database d,v\$instance i;
+
+EOF
+

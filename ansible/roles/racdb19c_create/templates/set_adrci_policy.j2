@@ -1,0 +1,10 @@
+export ORACLE_SID={{ oracle_sid }}1
+export ORACLE_HOME={{ oracle_home }}
+export PATH=$PATH:$ORACLE_HOME/bin
+
+echo "INFO: adrci setup started at `date`"
+adrci exec="set home {{ oracle_home }}; set control \(SHORTP_POLICY=168, LONGP_POLICY=720\);" ;
+adrci exec="show homes"|grep -v : 
+adrci exec="show control; purge" ;"
+echo
+echo "INFO: adrci setup finished at `date`"
