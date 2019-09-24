@@ -1,0 +1,210 @@
+
+[root@oel75 ansible]# ansible-playbook oracleGInRAC19cR3.yml
+
+PLAY [ora-x1,ora-x2] *************************************************************************************************
+
+TASK [Gathering Facts] ***********************************************************************************************
+ok: [192.168.56.102]
+ok: [192.168.56.103]
+
+TASK [racdb19c_create : display pre database create message] *********************************************************
+ok: [192.168.56.102] => {
+    "msg": [
+        "This playbook is for creating Oracle RAC database at 2019-09-24T11:05:23Z:"
+    ]
+}
+ok: [192.168.56.103] => {
+    "msg": [
+        "This playbook is for creating Oracle RAC database at 2019-09-24T11:05:23Z:"
+    ]
+}
+
+TASK [racdb19c_create : Check Binaries are already installed-N1] *****************************************************
+changed: [192.168.56.102]
+
+TASK [racdb19c_create : print results] *******************************************************************************
+ok: [192.168.56.102] => {
+    "dbsoft_checkn1.stdout": "/u02/app/oracle/product/19.3.0/db300"
+}
+
+TASK [racdb19c_create : Check if RDBMS software is installed] ********************************************************
+
+TASK [racdb19c_create : Check Binaries are already installed-N2] *****************************************************
+changed: [192.168.56.103]
+
+TASK [racdb19c_create : print results] *******************************************************************************
+ok: [192.168.56.103] => {
+    "dbsoft_checkn2.stdout": "/u02/app/oracle/product/19.3.0/db300"
+}
+
+TASK [racdb19c_create : Check if RDBMS software is installed] ********************************************************
+
+TASK [racdb19c_create : Create required directories] *****************************************************************
+changed: [192.168.56.102] => (item=/u02/stage)
+changed: [192.168.56.103] => (item=/u02/stage)
+ok: [192.168.56.102] => (item=/u02/app/oracle/oradata/)
+ok: [192.168.56.103] => (item=/u02/app/oracle/oradata/)
+
+TASK [racdb19c_create : create a new file for testing] ***************************************************************
+changed: [192.168.56.102]
+
+TASK [racdb19c_create : create a silent database response file] ******************************************************
+changed: [192.168.56.102]
+
+TASK [racdb19c_create : Create_RACDB | template for compatible] ******************************************************
+changed: [192.168.56.102]
+
+TASK [racdb19c_create : Create_RACDB | template for create password file] ********************************************
+changed: [192.168.56.102]
+
+TASK [racdb19c_create : Create_RACDB | template db createfile] *******************************************************
+changed: [192.168.56.102]
+
+TASK [racdb19c_create : Create_RACDB | template for spfile information] **********************************************
+changed: [192.168.56.102]
+
+TASK [racdb19c_create : Create_RACDB | template for remote listener file] ********************************************
+changed: [192.168.56.102]
+
+TASK [racdb19c_create : Create a RAC Database] ***********************************************************************
+changed: [192.168.56.102]
+
+TASK [racdb19c_create : output log of database creation] *************************************************************
+changed: [192.168.56.102]
+
+TASK [racdb19c_create : Output from Database Creation] ***************************************************************
+ok: [192.168.56.102] => {
+    "dbcreateloginfo.stdout_lines|map('trim')|list": [
+        "[ 2019-09-23 21:13:15.451 AEST ] Prepare for db operation",
+        "DBCA_PROGRESS : 7%",
+        "[ 2019-09-23 21:13:36.019 AEST ] Copying database files",
+        "DBCA_PROGRESS : 27%",
+        "[ 2019-09-23 21:14:54.227 AEST ] Creating and starting Oracle instance",
+        "DBCA_PROGRESS : 28%",
+        "DBCA_PROGRESS : 31%",
+        "DBCA_PROGRESS : 35%",
+        "DBCA_PROGRESS : 37%",
+        "DBCA_PROGRESS : 40%",
+        "[ 2019-09-23 21:34:29.752 AEST ] Creating cluster database views",
+        "DBCA_PROGRESS : 41%",
+        "DBCA_PROGRESS : 53%",
+        "[ 2019-09-23 21:35:44.294 AEST ] Completing Database Creation",
+        "DBCA_PROGRESS : 57%",
+        "DBCA_PROGRESS : 59%",
+        "DBCA_PROGRESS : 60%",
+        "[ 2019-09-23 21:43:51.029 AEST ] Creating Pluggable Databases",
+        "DBCA_PROGRESS : 64%",
+        "DBCA_PROGRESS : 80%",
+        "[ 2019-09-23 21:44:33.523 AEST ] Executing Post Configuration Actions",
+        "DBCA_PROGRESS : 100%",
+        "[ 2019-09-23 21:44:33.527 AEST ] Database creation complete. For details check the logfiles at:",
+        "/u02/app/oracle/cfgtoollogs/dbca/eaymd.",
+        "Database Information:",
+        "Global Database Name:eaymd",
+        "System Identifier(SID) Prefix:eaymd"
+    ]
+}
+
+TASK [racdb19c_create : Add oratab entry to first node] **************************************************************
+changed: [192.168.56.102]
+
+TASK [racdb19c_create : Add oratab entry to second node] *************************************************************
+changed: [192.168.56.103]
+
+TASK [racdb19c_create : Create_RACDB | Setup compatible Parameter] ***************************************************
+changed: [192.168.56.102]
+
+TASK [racdb19c_create : print versions compatible Parameter] *********************************************************
+ok: [192.168.56.102] => {
+    "v_version.stdout_lines|map('trim')|list": [
+        "19.0.0.0.0",
+        "",
+        "EAYMD,eaymd1,ora-x1.localdomain;"
+    ]
+}
+
+TASK [racdb19c_create : Create_RACDB | register variable for spfilepath] *********************************************
+changed: [192.168.56.102]
+
+TASK [racdb19c_create : set up initfile entry] ***********************************************************************
+changed: [192.168.56.102] => (item=+DATA/eaymd/spfileeaymd.ora)
+
+TASK [racdb19c_create : Create_RACDB | setup password file] **********************************************************
+changed: [192.168.56.102]
+
+TASK [racdb19c_create : Copy password files to the other nodes] ******************************************************
+changed: [192.168.56.102 -> ora-x2]
+
+TASK [racdb19c_create : Create_RACDB | Setup compatible Parameter] ***************************************************
+changed: [192.168.56.102] => (item=alter system set compatible=19.0.0.0.0
+
+EAYMD,eaymd1,ora-x1.localdomain; scope=spfile)
+
+TASK [racdb19c_create : Create_RACDB | Setup User SYS, SYSTEM and DBSNMP Password Parameter] *************************
+changed: [192.168.56.102] => (item=alter user DBSNMP identified by Oracle123)
+changed: [192.168.56.102] => (item=alter user SYSTEM identified by Oracle123)
+changed: [192.168.56.102] => (item=alter user SYS identified by Moral#Love_13)
+
+TASK [racdb19c_create : Create_RACDB | Stop cluster database] ********************************************************
+changed: [192.168.56.102]
+
+TASK [racdb19c_create : Create_RACDB | Start cluster database] *******************************************************
+changed: [192.168.56.102]
+
+TASK [racdb19c_create : Create_Database | create pfile] **************************************************************
+changed: [192.168.56.102] => (item=create pfile from spfile)
+
+TASK [racdb19c_create : Create_RACDB | Start cluster database] *******************************************************
+changed: [192.168.56.102]
+
+TASK [racdb19c_create : print database status] ***********************************************************************
+ok: [192.168.56.102] => {
+    "database_status.stdout_lines|map('trim')|list": [
+        "Instance eaymd1 is running on node ora-x1",
+        "Instance eaymd2 is running on node ora-x2"
+    ]
+}
+
+TASK [racdb19c_create : Create_RACDB | Stop cluster database] ********************************************************
+changed: [192.168.56.102]
+
+TASK [racdb19c_create : Create_RACDB | Start cluster database] *******************************************************
+changed: [192.168.56.102]
+
+TASK [racdb19c_create : Create_Database | create pfile] **************************************************************
+changed: [192.168.56.102] => (item=create pfile from spfile)
+
+TASK [racdb19c_create : Create_RACDB | Start cluster database] *******************************************************
+changed: [192.168.56.102]
+
+TASK [racdb19c_create : print database status] ***********************************************************************
+ok: [192.168.56.102] => {
+    "database_status.stdout_lines|map('trim')|list": [
+        "Instance eaymd1 is running on node ora-x1",
+        "Instance eaymd2 is running on node ora-x2"
+    ]
+}
+
+TASK [racdb19c_create : Remove stage directory] **********************************************************************
+changed: [192.168.56.103] => (item=/u02/stage)
+changed: [192.168.56.102] => (item=/u02/stage)
+
+TASK [racdb19c_create : display post database create message] ********************************************************
+ok: [192.168.56.102] => {
+    "msg": [
+        "This Steps completed below task for RAC database at 2019-09-24T11:05:23Z:",
+        "Oracle 19c Oracle RAC Database task completed successfully in Silent Mode",
+        "END OF ALL: git repository of \"racdb19c_create\" will be shared"
+    ]
+}
+ok: [192.168.56.103] => {
+    "msg": [
+        "This Steps completed below task for RAC database at 2019-09-24T11:05:23Z:",
+        "Oracle 19c Oracle RAC Database task completed successfully in Silent Mode",
+        "END OF ALL: git repository of \"racdb19c_create\" will be shared"
+    ]
+}
+
+PLAY RECAP ***********************************************************************************************************
+192.168.56.102             : ok=36   changed=28   unreachable=0    failed=0
+192.168.56.103             : ok=8    changed=4    unreachable=0    failed=0
