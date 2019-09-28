@@ -24,10 +24,10 @@
 - name: Add oratab entry to first node
   when: inventory_hostname in groups['ora-x1']
   remote_user: "{{ root_user }}"
-  lineinfile: dest='/etc/oratab' regexp='^{{ oracle_sid }}1:{{ oracle_home }}:N' line='{{ oracle_sid }}1:{{ oracle_home }}:Y'
+  lineinfile: dest='/etc/oratab' state=present regexp='^{{ oracle_sid }}1:{{ oracle_home }}:N' line='{{ oracle_sid }}1:{{ oracle_home }}:Y'
 
 - name: Add oratab entry to second node
   when: inventory_hostname in groups['ora-x2']
   remote_user: "{{ root_user }}"
-  lineinfile: dest='/etc/oratab' regexp='^{{ oracle_sid }}2:{{ oracle_home }}:N' line='{{ oracle_sid }}2:{{ oracle_home }}:Y'
+  lineinfile: dest='/etc/oratab' state=present regexp='^{{ oracle_sid }}2:{{ oracle_home }}:N' line='{{ oracle_sid }}2:{{ oracle_home }}:Y'
 

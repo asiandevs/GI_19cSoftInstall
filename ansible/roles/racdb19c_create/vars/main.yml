@@ -9,20 +9,26 @@ oracle_home_name:                "OraDB19Home1"
 grid_home:                       "/u02/app/19.3.0/grid"
 silent_listener_config_file:     "{{ stage_dir }}/silent-lsnr19c-config.rsp"
 dbfile_path:                     "{{ oracle_base }}/oradata/"
-dbrac19c_rsp: dbrac19c.rsp
-oracle_sid: eaymd
-oracle_sid2: eaymd2
-instancevw: "v$instance"
-asm_instance: "+ASM1"
-grid_user: grid
-db_unqname: eaymd
-db_name : eaymd
-cdb_name: eaymd
-dbsnmppwd : "Oracle123"
-systempwd : "Oracle123"
-syspwd : "Moral#Love_13"
-oratab : /etc/oratab
-spfile : spfile
+dbrac19c_rsp:                    dbrac19c.rsp
+oracle_sid:                      eaymd
+oracle_sid2:                     eaymd2
+instancevw:                      "v$instance"
+asm_instance:                    "+ASM1"
+grid_user:                       grid
+db_unqname:                      eaymd
+db_name :                        eaymd
+cdb_name:                        eaymd
+dbsnmppwd :                      "Oracle123"
+systempwd :                      "Oracle123"
+syspwd :                         "Family#Love_13"
+oratab :                          /etc/oratab
+spfile :                          spfile
+recodiskgroup:               RECO
+recodisks1:                   ASM_DISK07
+recodisks2:                   ASM_DISK08
+vredundancy:                 EXTERNAL
+vausize:                     1
+vcompatibility:              19.0.0.0
 env_db:
   ORACLE_HOME: "{{ oracle_home }}"
   ORACLE_BASE: "{{ oracle_base }}"

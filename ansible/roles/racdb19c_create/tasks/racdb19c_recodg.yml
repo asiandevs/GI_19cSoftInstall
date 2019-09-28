@@ -1,0 +1,35 @@
+---
+- name: Get RECO diskgroup status
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: "{{ grid_user }}"
+  when: inventory_hostname in groups['ora-x1']
+  shell: 'export GRID_HOME={{ grid_home }}; {{ grid_home }}/bin/srvctl status diskgroup -g {{ recodiskgroup }}'
+  register: recodgexist
+  failed_when: recodgexist.rc >= 2
+  ignore_errors: yes
+
+- debug:
+    var: recodgexist
+    verbosity: 2
+
+- name: show result if Disk Group {{ recodiskgroup }} - exist and already up
+  when: inventory_hostname in groups['ora-x1'] and recodgexist.stdout.find('does not exist') != 1
+  debug:
+    msg: "{{ recodgexist.stdout_lines }}"
+  ignore_errors: yes
+
+- name: Create RECO diskgroups - exit if exist
+  when: inventory_hostname in groups['ora-x1'] and recodgexist.stdout.find('does not exist') != 1 
+  remote_user: "{{ root_user }}"
+  become: yes
+  become_user: "{{ grid_user }}"
+  shell: "{{ stage_dir }}/createdg_reco.sh"
+  register: credgtstat
+  ignore_errors: yes
+
+- name: "Output from RECO DG Creation"
+  when: inventory_hostname in groups['ora-x1']
+  debug:
+    var: credgtstat.stdout_lines
+

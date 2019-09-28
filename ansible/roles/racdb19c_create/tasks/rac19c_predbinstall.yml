@@ -43,6 +43,18 @@
   become_user: "{{ oracle_user }}"
   template: src=templates/setup_db_crefile_dest.sh.j2 dest={{ stage_dir }}/setup_db_crefile_dest.sh owner=oracle group=oinstall mode=0775
 
+- name: Template - setup silent reco diskgroup config script
+  when: inventory_hostname in groups['ora-x1']
+  remote_user: "{{ root_user }}"
+  template:
+      src=roles/racdb19c_create/templates/createdg_reco.sh.j2
+      dest={{ stage_dir }}/createdg_reco.sh
+      owner="{{ grid_user }}"
+      group="{{ grid_group }}"
+      mode=0775
+  tags:
+    - reco_slntcfg
+
 - name: Copy database SQL script to the target database server
   when: inventory_hostname in groups['ora-x1']
   copy: src=roles/racdb19c_create/files/{{ item }} dest={{ stage_dir }} owner=oracle group=oinstall mode=0775 force=yes
@@ -58,4 +70,5 @@
     owner="{{ oracle_user }}"
     group="{{ oracle_install_group }}"
     mode=0775
+
 

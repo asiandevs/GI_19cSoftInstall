@@ -1,0 +1,11 @@
+#!/bin/bash
+
+{{ grid_home }}/bin/asmca -silent -createDiskGroup \
+-diskString '/dev/oracleasm/disks/*' \
+-diskGroupName {{ recodiskgroup }} \
+-diskList '/dev/oracleasm/disks/{{ recodisks1 }}','/dev/oracleasm/disks/{{ recodisks2 }}' \
+-redundancy {{ vredundancy }} \
+-au_size {{ vausize}} \
+-compatible.asm '{{ vcompatibility }}' \
+-compatible.rdbms '{{ vcompatibility }}'
+

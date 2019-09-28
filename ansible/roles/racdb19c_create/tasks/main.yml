@@ -11,6 +11,7 @@
   block:
     - import_tasks: rac19c_predbsoftchk.yml
     - import_tasks: racdb19c_pretemplatecreate.yml
+    - import_tasks: racdb19c_recodg.yml
   become:           yes
   become_user:      root
 
