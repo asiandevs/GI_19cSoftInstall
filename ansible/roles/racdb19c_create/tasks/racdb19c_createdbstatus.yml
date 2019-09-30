@@ -1,4 +1,8 @@
 ---
+# ===========================================================
+# Summary Steps:
+# (1) Restart database and validate using crsctl
+# ===========================================================
 - name: Create_RACDB | Stop cluster database 
   when: inventory_hostname in groups['ora-x1']
   remote_user: "{{ root_user }}"
@@ -25,7 +29,7 @@
   with_items:
     - create pfile from spfile
 
-- name: Create_RACDB | Start cluster database 
+- name: Create_RACDB | check cluster database status
   when: inventory_hostname in groups['ora-x1']
   remote_user: "{{ root_user }}"
   become: yes

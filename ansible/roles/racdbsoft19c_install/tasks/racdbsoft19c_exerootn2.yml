@@ -1,4 +1,8 @@
 ---
+# =============================================================================
+# Install Oracle RAC database 19.3.0 Software Only:
+# (1) Execute root.sh scripts on second node
+# =============================================================================
 - name: RACDBSOFT_INSTALL | Execute root.sh on node2
   when: inventory_hostname in groups['ora-x2']
   remote_user: "{{ root_user }}"

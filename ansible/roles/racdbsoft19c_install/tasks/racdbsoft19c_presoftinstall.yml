@@ -1,4 +1,13 @@
 ---
+#======== =============================================================================
+# Install Oracle RAC DB 19.3.0 Software Only:
+# Assumption: 
+#  -  Oracle database pre install rpm downloaded
+#  -  Oracle Database software is downloaded and staged
+# (1) Check if Binaries are already installed
+# (2) Create required directories
+# (3) Unpack Oracle Database software to the Oracle Home directory into the first node
+# =====================================================================================
 - name: RACDBSOFT_INSTALL | Check if Binaries are already installed
   shell: grep "={{ oracle_home_name }}" {{ oracle_inventory }}/ContentsXML/inventory.xml
   register: dbsoft_install_check
@@ -49,4 +58,3 @@
      mode=0775
      group="{{ oracle_install_group }}"
      owner="{{ oracle_user }}"
-

@@ -1,4 +1,9 @@
 ---
+# =====================================================================================
+# Summary Steps:
+# (1) Create a RAC database using response file in silent mode 
+# (2) Add oratab entry 
+# =====================================================================================
 - name: Create a RAC Database
   when: inventory_hostname in groups['ora-x1']
   remote_user: "{{ root_user }}"

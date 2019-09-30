@@ -1,4 +1,10 @@
 ---
+# =============================================================================
+# Summary Steps: 
+# (1) Create silent response file from template
+# (2) Install Oracle RAC database 19.3.0 Software Only in Silent Mode
+# (3) Validate Oracle database software installation
+# =============================================================================
 - name: RACDBSOFT_INSTALL | Create silent response file from template
   when: inventory_hostname in groups['ora-x1']
   template: src={{ dbsoft19c_rsp }}.j2 dest={{ stage_dir }}/{{ dbsoft19c_rsp }} owner=oracle group=oinstall mode=0775
@@ -31,4 +37,3 @@
     var: racdbsoftinstall_log.stdout
     verbosity: 0
   when: inventory_hostname in groups['ora-x1'] and "'Successfully Setup Software.' or 'Successfully Setup Software with warning(s).' in racdbsoftinstall_log.stdout"
-

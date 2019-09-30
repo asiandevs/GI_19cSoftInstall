@@ -1,4 +1,10 @@
 ---
+# =====================================================================================
+# Summary Steps:
+# (1) Create required directories
+# (2) Create a silent response file from template to create a RAC database
+# (3) Create necessary templates for creating a RAC database
+# =====================================================================================
 - name: Create required directories
   when: inventory_hostname in groups['dbservers']
   remote_user: "{{ root_user }}"

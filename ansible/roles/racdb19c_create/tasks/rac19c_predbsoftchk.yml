@@ -1,4 +1,9 @@
 ---
+# =====================================================================
+# Install Oracle Database 19.3 software for RAC using Ansible:
+# Summary Steps:
+# (1) Check if Binaries are already installed
+# =====================================================================
 - name: Check Binaries are already installed-N1
   when: inventory_hostname in groups['ora-x1']
   shell: cat {{ oracle_inventory }}/ContentsXML/inventory.xml | grep {{oracle_home_name}} | cut -d\" -f4
@@ -28,5 +33,3 @@
 - name: Check if RDBMS software is installed
   when: inventory_hostname in groups['ora-x2'] and dbsoft_checkn2.stdout != oracle_home
   fail: msg=" ----- Oracle Database Software is not installed~N2 ----- "
-
-

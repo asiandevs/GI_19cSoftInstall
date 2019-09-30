@@ -1,5 +1,9 @@
 ---
-- name: RACDBSOFT_INSTALL | Get Database database and patch versions
+# =============================================================================
+# Install Oracle RAC database 19.3.0 Software Only:
+# (1) Get database and patch versions 
+# =============================================================================
+- name: RACDBSOFT_INSTALL | Get database and patch versions
   remote_user: "{{ root_user }}"
   become: yes
   become_user: oracle

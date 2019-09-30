@@ -1,4 +1,8 @@
 ---
+# =====================================================================================
+# Summary Step:
+# (1) Create RECO diskgroup if not exist
+# =====================================================================================
 - name: Get RECO diskgroup status
   remote_user: "{{ root_user }}"
   become: yes

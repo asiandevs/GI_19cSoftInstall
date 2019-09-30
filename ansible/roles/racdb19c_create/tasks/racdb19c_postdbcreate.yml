@@ -1,4 +1,11 @@
 ---
+# =======================================================================
+# Summary Steps:
+# (1) Setup database compatible parameter 
+# (2) Setup database password file 
+# (3) Setup User SYS, SYSTEM and DBSNMP Password Parameter
+# (4) Restart cluster database
+# =======================================================================
 - name: Create_RACDB | Setup compatible Parameter
   when: inventory_hostname in groups['ora-x1']
   remote_user: "{{ root_user }}"
@@ -24,26 +31,6 @@
   args:
      executable: /bin/bash
 
-#- name: print results
-#  when: inventory_hostname in groups['ora-x1']
-#  debug:
-#    var: v_spfilepath.stdout_lines|map('trim')|list
-
-#- name: Create_RACDB | register variable for spfile
-#  when: inventory_hostname in groups['ora-x1']
-#  remote_user: "{{ root_user }}"
-#  become: yes
-#  become_user: "{{ oracle_user }}"
-#  shell: '{{ stage_dir }}/setup_spfile.sh'
-#  register: v_spfile
-#  args:
-#     executable: /bin/bash
-
-#- name: print results
-#  when: inventory_hostname in groups['ora-x1']
-#  debug:
-#    var: v_spfile.stdout_lines|map('trim')|list
-#
 - name: set up initfile entry
   when: inventory_hostname in groups['ora-x1']
   remote_user: "{{ root_user }}"
@@ -87,14 +74,6 @@
   with_items:
     - alter system set compatible={{ v_version.stdout }} scope=spfile	 
   environment: "{{ env_db }}"
-
-#- name: Setup spfile alias
-#  when: inventory_hostname in groups['ora-x1']
-#  remote_user: "{{ root_user }}"
-#  become: yes
-#  become_user: "{{ grid_user }}"
-#  shell: "asmcmd mkalias {{ v_spfile.stdout }} {{ v_spfilepath.stdout }}/{{ db_unqname }}/spfile{{ db_name }}.ora"
-#  environment: "{{ env_grid }}"
 
 - name: Create_RACDB | Setup User SYS, SYSTEM and DBSNMP Password Parameter
   when: inventory_hostname in groups['ora-x1']
