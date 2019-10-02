@@ -17,7 +17,7 @@
 
 - name: Check if RDBMS software is installed
   when: inventory_hostname in groups['ora-x1'] and dbsoft_checkn1.stdout != oracle_home
-  fail: msg=" ----- Oracle Database Software is not installed~N1 ----- "
+  fail: msg=" ----- Oracle RDBMS is not installed~N1 ----- "
 
 - name: Check Binaries are already installed-N2
   when: inventory_hostname in groups['ora-x2']
