@@ -1,0 +1,805 @@
+[root@oel75 ansible]# ansible-playbook ru_1903_1904.yml
+
+PLAY [ora-x1,ora-x2] *************************************************************************
+
+TASK [Gathering Facts] ***********************************************************************
+ok: [192.168.56.103]
+ok: [192.168.56.102]
+
+TASK [racdb_patch_apply : display pre GI RU message] *****************************************
+ok: [192.168.56.102] => {
+    "msg": [
+        "This playbook is for Oracle Database Patch - GI Release Update of Oracle 19.3 to 19.4                                       started at 2019-10-06T04:05:06Z:"
+    ]
+}
+ok: [192.168.56.103] => {
+    "msg": [
+        "This playbook is for Oracle Database Patch - GI Release Update of Oracle 19.3 to 19.4                                       started at 2019-10-06T04:05:05Z:"
+    ]
+}
+
+TASK [racdb_patch_apply : RAC Patching | Create required directories] ************************
+changed: [192.168.56.102] => (item=/u02/stage)
+changed: [192.168.56.103] => (item=/u02/stage)
+ok: [192.168.56.102] => (item=/u01/patches/29699097)
+ok: [192.168.56.103] => (item=/u01/patches/29699097)
+
+TASK [racdb_patch_apply : RAC Patching | Create LogFile Directory] ***************************
+ok: [192.168.56.102]
+ok: [192.168.56.103]
+
+TASK [racdb_patch_apply : RAC Patching | Backup opatch file from grid home] ******************
+changed: [192.168.56.102]
+changed: [192.168.56.103]
+
+TASK [racdb_patch_apply : RAC Patching | Backup opatch file from oracle home] ****************
+changed: [192.168.56.102]
+changed: [192.168.56.103]
+
+TASK [racdb_patch_apply : RAC Patching | Update required opatch utility in grid home] ********
+changed: [192.168.56.103]
+changed: [192.168.56.102]
+
+TASK [racdb_patch_apply : RAC Patching | Update opatch ownership in grid home] ***************
+changed: [192.168.56.102]
+changed: [192.168.56.103]
+
+TASK [racdb_patch_apply : RAC Patching | Update required opatch utility in oracle home] ******
+changed: [192.168.56.102]
+changed: [192.168.56.103]
+
+TASK [racdb_patch_apply : RAC Patching | Update opatch ownership in oracle home] *************
+changed: [192.168.56.102]
+changed: [192.168.56.103]
+
+TASK [racdb_patch_apply : RAC Patching | unzip required patch file] **************************
+changed: [192.168.56.103]
+changed: [192.168.56.102]
+
+TASK [racdb_patch_apply : RAC Patching | Run OPatch Conflict Check (grid home)] **************
+changed: [192.168.56.103] => (item=29834717)
+changed: [192.168.56.102] => (item=29834717)
+changed: [192.168.56.102] => (item=29850993)
+changed: [192.168.56.103] => (item=29850993)
+changed: [192.168.56.102] => (item=29851014)
+changed: [192.168.56.103] => (item=29851014)
+changed: [192.168.56.103] => (item=29401763)
+changed: [192.168.56.102] => (item=29401763)
+
+TASK [racdb_patch_apply : RAC Patching | Run OPatch Conflict Check (oracle home)] ************
+changed: [192.168.56.103] => (item=29834717)
+changed: [192.168.56.102] => (item=29834717)
+changed: [192.168.56.103] => (item=29850993)
+changed: [192.168.56.102] => (item=29850993)
+
+TASK [racdb_patch_apply : RAC Patching | create opatch system space check files for grid home]                                       ***
+changed: [192.168.56.103]
+changed: [192.168.56.102]
+
+TASK [racdb_patch_apply : RAC Patching | create opatch system space check files for oracle hom                                      e] ***
+changed: [192.168.56.103]
+changed: [192.168.56.102]
+
+TASK [racdb_patch_apply : RAC Patching | OPatch SystemSpace Check (grid home)] ***************
+changed: [192.168.56.102]
+changed: [192.168.56.103]
+
+TASK [racdb_patch_apply : RAC Patching | OPatch SystemSpace Check (oracle home)] *************
+changed: [192.168.56.102]
+changed: [192.168.56.103]
+
+TASK [racdb_patch_apply : RAC Patching | check inventory for grid home (opatchauto)] *********
+changed: [192.168.56.102]
+changed: [192.168.56.103]
+
+TASK [racdb_patch_apply : RAC Patching | check inventory for oracle home (opatchauto)] *******
+changed: [192.168.56.102]
+changed: [192.168.56.103]
+
+TASK [racdb_patch_apply : RAC Patching | Patch Information for grid home (opatchauto)] *******
+changed: [192.168.56.102]
+changed: [192.168.56.103]
+
+TASK [racdb_patch_apply : debug] *************************************************************
+ok: [192.168.56.102] => {
+    "opatch_lspatches_gh.stdout_lines": [
+        "29585399;OCW RELEASE UPDATE 19.3.0.0.0 (29585399)",
+        "29517247;ACFS RELEASE UPDATE 19.3.0.0.0 (29517247)",
+        "29517242;Database Release Update : 19.3.0.0.190416 (29517242)",
+        "29401763;TOMCAT RELEASE UPDATE 19.0.0.0.0 (29401763)",
+        "",
+        "OPatch succeeded."
+    ]
+}
+ok: [192.168.56.103] => {
+    "opatch_lspatches_gh.stdout_lines": [
+        "29585399;OCW RELEASE UPDATE 19.3.0.0.0 (29585399)",
+        "29517247;ACFS RELEASE UPDATE 19.3.0.0.0 (29517247)",
+        "29517242;Database Release Update : 19.3.0.0.190416 (29517242)",
+        "29401763;TOMCAT RELEASE UPDATE 19.0.0.0.0 (29401763)",
+        "",
+        "OPatch succeeded."
+    ]
+}
+
+TASK [racdb_patch_apply : RAC Patching | Patch Information for database home (opatchauto)] ***
+changed: [192.168.56.102]
+changed: [192.168.56.103]
+
+TASK [racdb_patch_apply : debug] *************************************************************
+ok: [192.168.56.102] => {
+    "opatch_lspatches_oh.stdout_lines": [
+        "29585399;OCW RELEASE UPDATE 19.3.0.0.0 (29585399)",
+        "29517242;Database Release Update : 19.3.0.0.190416 (29517242)",
+        "",
+        "OPatch succeeded."
+    ]
+}
+ok: [192.168.56.103] => {
+    "opatch_lspatches_oh.stdout_lines": [
+        "29585399;OCW RELEASE UPDATE 19.3.0.0.0 (29585399)",
+        "29517242;Database Release Update : 19.3.0.0.190416 (29517242)",
+        "",
+        "OPatch succeeded."
+    ]
+}
+
+TASK [racdb_patch_apply : RAC Patching | RU to grid home and db home on first node (opatchauto                                      )] ***
+included: /etc/ansible/roles/racdb_patch_apply/tasks/ru_frstnode_gindb.yml for 192.168.56.102,                                       192.168.56.103
+
+TASK [racdb_patch_apply : RAC Patching | RU to grid home first node (opatchauto)] ************
+changed: [192.168.56.102]
+
+TASK [racdb_patch_apply : debug] *************************************************************
+ok: [192.168.56.102] => {
+    "patch_apply_gh_first.stdout_lines": [
+        "",
+        "OPatchauto session is initiated at Sun Oct  6 15:09:56 2019",
+        "",
+        "System initialization log file is /u02/app/19.4/grid/cfgtoollogs/opatchautodb/systemc                                      onfig2019-10-06_03-10-00PM.log.",
+        "",
+        "Session log file is /u02/app/19.4/grid/cfgtoollogs/opatchauto/opatchauto2019-10-06_03                                      -10-26PM.log",
+        "The id for this session is LM9M",
+        "",
+        "Executing OPatch prereq operations to verify patch applicability on home /u02/app/19.                                      4/grid",
+        "Patch applicability verified successfully on home /u02/app/19.4/grid",
+        "",
+        "",
+        "Bringing down CRS service on home /u02/app/19.4/grid",
+        "CRS service brought down successfully on home /u02/app/19.4/grid",
+        "",
+        "",
+        "Start applying binary patch on home /u02/app/19.4/grid",
+        "Binary patch applied successfully on home /u02/app/19.4/grid",
+        "",
+        "",
+        "Starting CRS service on home /u02/app/19.4/grid",
+        "CRS service started successfully on home /u02/app/19.4/grid",
+        "",
+        "OPatchAuto successful.",
+        "",
+        "--------------------------------Summary--------------------------------",
+        "",
+        "Patching is completed successfully. Please find the summary as follows:",
+        "",
+        "Host:ora-x1",
+        "CRS Home:/u02/app/19.4/grid",
+        "Version:19.0.0.0.0",
+        "Summary:",
+        "",
+        "==Following patches were SKIPPED:",
+        "",
+        "Patch: /u01/patches/29699097/29708769/29401763",
+        "Reason: This patch is already been applied, so not going to apply again.",
+        "",
+        "",
+        "==Following patches were SUCCESSFULLY applied:",
+        "",
+        "Patch: /u01/patches/29699097/29708769/29834717",
+        "Log: /u02/app/19.4/grid/cfgtoollogs/opatchauto/core/opatch/opatch2019-10-06_15-13-59P                                      M_1.log",
+        "",
+        "Patch: /u01/patches/29699097/29708769/29850993",
+        "Log: /u02/app/19.4/grid/cfgtoollogs/opatchauto/core/opatch/opatch2019-10-06_15-13-59P                                      M_1.log",
+        "",
+        "Patch: /u01/patches/29699097/29708769/29851014",
+        "Log: /u02/app/19.4/grid/cfgtoollogs/opatchauto/core/opatch/opatch2019-10-06_15-13-59P                                      M_1.log",
+        "",
+        "",
+        "",
+        "OPatchauto session completed at Sun Oct  6 15:23:48 2019",
+        "Time taken to complete the session 13 minutes, 53 seconds"
+    ]
+}
+
+TASK [racdb_patch_apply : RAC Patching | RU to database home first node (opatchauto)] ********
+changed: [192.168.56.102]
+
+TASK [racdb_patch_apply : debug] *************************************************************
+ok: [192.168.56.102] => {
+    "patch_apply_oh_first.stdout_lines": [
+        "",
+        "OPatchauto session is initiated at Sun Oct  6 15:23:50 2019",
+        "",
+        "System initialization log file is /u02/app/oracle/product/19.4/db300/cfgtoollogs/opat                                      chautodb/systemconfig2019-10-06_03-23-55PM.log.",
+        "",
+        "Session log file is /u02/app/oracle/product/19.4/db300/cfgtoollogs/opatchauto/opatcha                                      uto2019-10-06_03-25-55PM.log",
+        "The id for this session is 3PXU",
+        "",
+        "Executing OPatch prereq operations to verify patch applicability on home /u02/app/ora                                      cle/product/19.4/db300",
+        "Patch applicability verified successfully on home /u02/app/oracle/product/19.4/db300"                                      ,
+        "",
+        "",
+        "Verifying SQL patch applicability on home /u02/app/oracle/product/19.4/db300",
+        "SQL patch applicability verified successfully on home /u02/app/oracle/product/19.4/db                                      300",
+        "",
+        "",
+        "Preparing to bring down database service on home /u02/app/oracle/product/19.4/db300",                                      
+        "Successfully prepared home /u02/app/oracle/product/19.4/db300 to bring down database                                       service",
+        "",
+        "",
+        "Bringing down database service on home /u02/app/oracle/product/19.4/db300",
+        "Following database(s) and/or service(s) are stopped and will be restarted later durin                                      g the session: eaymd",
+        "Database service successfully brought down on home /u02/app/oracle/product/19.4/db300                                      ",
+        "",
+        "",
+        "Performing prepatch operation on home /u02/app/oracle/product/19.4/db300",
+        "Perpatch operation completed successfully on home /u02/app/oracle/product/19.4/db300"                                      ,
+        "",
+        "",
+        "Start applying binary patch on home /u02/app/oracle/product/19.4/db300",
+        "Binary patch applied successfully on home /u02/app/oracle/product/19.4/db300",
+        "",
+        "",
+        "Performing postpatch operation on home /u02/app/oracle/product/19.4/db300",
+        "Postpatch operation completed successfully on home /u02/app/oracle/product/19.4/db300                                      ",
+        "",
+        "",
+        "Starting database service on home /u02/app/oracle/product/19.4/db300",
+        "Database service successfully started on home /u02/app/oracle/product/19.4/db300",
+        "",
+        "",
+        "Preparing home /u02/app/oracle/product/19.4/db300 after database service restarted",
+        "No step execution required.........",
+        " ",
+        "",
+        "Trying to apply SQL patch on home /u02/app/oracle/product/19.4/db300",
+        "SQL patch applied successfully on home /u02/app/oracle/product/19.4/db300",
+        "",
+        "OPatchAuto successful.",
+        "",
+        "--------------------------------Summary--------------------------------",
+        "",
+        "Patching is completed successfully. Please find the summary as follows:",
+        "",
+        "Host:ora-x1",
+        "RAC Home:/u02/app/oracle/product/19.4/db300",
+        "Version:19.0.0.0.0",
+        "Summary:",
+        "",
+        "==Following patches were SKIPPED:",
+        "",
+        "Patch: /u01/patches/29699097/29708769/29851014",
+        "Reason: This patch is not applicable to this specified target type - \"rac_database\"                                      ",
+        "",
+        "Patch: /u01/patches/29699097/29708769/29401763",
+        "Reason: This patch is not applicable to this specified target type - \"rac_database\"                                      ",
+        "",
+        "",
+        "==Following patches were SUCCESSFULLY applied:",
+        "",
+        "Patch: /u01/patches/29699097/29708769/29834717",
+        "Log: /u02/app/oracle/product/19.4/db300/cfgtoollogs/opatchauto/core/opatch/opatch2019                                      -10-06_15-27-56PM_1.log",
+        "",
+        "Patch: /u01/patches/29699097/29708769/29850993",
+        "Log: /u02/app/oracle/product/19.4/db300/cfgtoollogs/opatchauto/core/opatch/opatch2019                                      -10-06_15-27-56PM_1.log",
+        "",
+        "",
+        "",
+        "OPatchauto session completed at Sun Oct  6 15:32:40 2019",
+        "Time taken to complete the session 8 minutes, 50 seconds"
+    ]
+}
+
+TASK [racdb_patch_apply : Restart cluster first node after applying RU] **********************
+included: /etc/ansible/roles/racdb_patch_apply/tasks/restsrt_cluster_frstnode.yml for 192.168.                                      56.102, 192.168.56.103
+
+TASK [racdb_patch_apply : Restart cluster stop] **********************************************
+changed: [192.168.56.102]
+
+TASK [racdb_patch_apply : Restart cluster start] *********************************************
+changed: [192.168.56.102]
+
+TASK [racdb_patch_apply : RAC Patching | Pause after GI patching completion on first node] ***
+Pausing for 600 seconds
+(ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+[racdb_patch_apply : RAC Patching | Pause after GI patching completion on first node]
+Verify First Node - Everything running OK or NOT.:
+Press 'C' to continue the play or 'A' to abort
+ok: [192.168.56.102]
+
+TASK [racdb_patch_apply : RAC Patching | RU to grid home and db home on second node (opatchaut                                      o)] ***
+included: /etc/ansible/roles/racdb_patch_apply/tasks/ru_secnode_gindb.yml for 192.168.56.102,                                       192.168.56.103
+
+TASK [racdb_patch_apply : RAC Patching | RU to grid home second node (opatchauto)] ***********
+changed: [192.168.56.103]
+
+TASK [racdb_patch_apply : debug] *************************************************************
+ok: [192.168.56.103] => {
+    "patch_apply_gh_second.stdout_lines": [
+        "",
+        "OPatchauto session is initiated at Sun Oct  6 15:34:11 2019",
+        "",
+        "System initialization log file is /u02/app/19.4/grid/cfgtoollogs/opatchautodb/systemc                                      onfig2019-10-06_03-34-16PM.log.",
+        "",
+        "Session log file is /u02/app/19.4/grid/cfgtoollogs/opatchauto/opatchauto2019-10-06_03                                      -34-33PM.log",
+        "The id for this session is EHTM",
+        "",
+        "Executing OPatch prereq operations to verify patch applicability on home /u02/app/19.                                      4/grid",
+        "Patch applicability verified successfully on home /u02/app/19.4/grid",
+        "",
+        "",
+        "Bringing down CRS service on home /u02/app/19.4/grid",
+        "CRS service brought down successfully on home /u02/app/19.4/grid",
+        "",
+        "",
+        "Start applying binary patch on home /u02/app/19.4/grid",
+        "Binary patch applied successfully on home /u02/app/19.4/grid",
+        "",
+        "",
+        "Starting CRS service on home /u02/app/19.4/grid",
+        "CRS service started successfully on home /u02/app/19.4/grid",
+        "",
+        "OPatchAuto successful.",
+        "",
+        "--------------------------------Summary--------------------------------",
+        "",
+        "Patching is completed successfully. Please find the summary as follows:",
+        "",
+        "Host:ora-x2",
+        "CRS Home:/u02/app/19.4/grid",
+        "Version:19.0.0.0.0",
+        "Summary:",
+        "",
+        "==Following patches were SKIPPED:",
+        "",
+        "Patch: /u01/patches/29699097/29708769/29401763",
+        "Reason: This patch is already been applied, so not going to apply again.",
+        "",
+        "",
+        "==Following patches were SUCCESSFULLY applied:",
+        "",
+        "Patch: /u01/patches/29699097/29708769/29834717",
+        "Log: /u02/app/19.4/grid/cfgtoollogs/opatchauto/core/opatch/opatch2019-10-06_15-37-19P                                      M_1.log",
+        "",
+        "Patch: /u01/patches/29699097/29708769/29850993",
+        "Log: /u02/app/19.4/grid/cfgtoollogs/opatchauto/core/opatch/opatch2019-10-06_15-37-19P                                      M_1.log",
+        "",
+        "Patch: /u01/patches/29699097/29708769/29851014",
+        "Log: /u02/app/19.4/grid/cfgtoollogs/opatchauto/core/opatch/opatch2019-10-06_15-37-19P                                      M_1.log",
+        "",
+        "",
+        "",
+        "OPatchauto session completed at Sun Oct  6 15:46:36 2019",
+        "Time taken to complete the session 12 minutes, 25 seconds"
+    ]
+}
+
+TASK [racdb_patch_apply : Avoid issue OPATCHAUTO-68061 and opatchauto failed with error code 4                                      2] ***
+changed: [192.168.56.103]
+
+TASK [racdb_patch_apply : RAC Patching | RU to database home second node (opatchauto)] *******
+changed: [192.168.56.103]
+
+TASK [racdb_patch_apply : debug] *************************************************************
+ok: [192.168.56.103] => {
+    "patch_apply_oh_second.stdout_lines": [
+        "",
+        "OPatchauto session is initiated at Sun Oct  6 15:46:40 2019",
+        "",
+        "System initialization log file is /u02/app/oracle/product/19.4/db300/cfgtoollogs/opat                                      chautodb/systemconfig2019-10-06_03-46-44PM.log.",
+        "",
+        "Session log file is /u02/app/oracle/product/19.4/db300/cfgtoollogs/opatchauto/opatcha                                      uto2019-10-06_03-48-21PM.log",
+        "The id for this session is 8JNG",
+        "",
+        "Executing OPatch prereq operations to verify patch applicability on home /u02/app/ora                                      cle/product/19.4/db300",
+        "Patch applicability verified successfully on home /u02/app/oracle/product/19.4/db300"                                      ,
+        "",
+        "",
+        "Verifying SQL patch applicability on home /u02/app/oracle/product/19.4/db300",
+        "SQL patch applicability verified successfully on home /u02/app/oracle/product/19.4/db                                      300",
+        "",
+        "",
+        "Preparing to bring down database service on home /u02/app/oracle/product/19.4/db300",                                      
+        "Successfully prepared home /u02/app/oracle/product/19.4/db300 to bring down database                                       service",
+        "",
+        "",
+        "Bringing down database service on home /u02/app/oracle/product/19.4/db300",
+        "Following database(s) and/or service(s) are stopped and will be restarted later durin                                      g the session: eaymd",
+        "Database service successfully brought down on home /u02/app/oracle/product/19.4/db300                                      ",
+        "",
+        "",
+        "Performing prepatch operation on home /u02/app/oracle/product/19.4/db300",
+        "Perpatch operation completed successfully on home /u02/app/oracle/product/19.4/db300"                                      ,
+        "",
+        "",
+        "Start applying binary patch on home /u02/app/oracle/product/19.4/db300",
+        "Binary patch applied successfully on home /u02/app/oracle/product/19.4/db300",
+        "",
+        "",
+        "Performing postpatch operation on home /u02/app/oracle/product/19.4/db300",
+        "Postpatch operation completed successfully on home /u02/app/oracle/product/19.4/db300                                      ",
+        "",
+        "",
+        "Starting database service on home /u02/app/oracle/product/19.4/db300",
+        "Database service successfully started on home /u02/app/oracle/product/19.4/db300",
+        "",
+        "",
+        "Preparing home /u02/app/oracle/product/19.4/db300 after database service restarted",
+        "No step execution required.........",
+        " ",
+        "",
+        "Trying to apply SQL patch on home /u02/app/oracle/product/19.4/db300",
+        "SQL patch applied successfully on home /u02/app/oracle/product/19.4/db300",
+        "",
+        "OPatchAuto successful.",
+        "",
+        "--------------------------------Summary--------------------------------",
+        "",
+        "Patching is completed successfully. Please find the summary as follows:",
+        "",
+        "Host:ora-x2",
+        "RAC Home:/u02/app/oracle/product/19.4/db300",
+        "Version:19.0.0.0.0",
+        "Summary:",
+        "",
+        "==Following patches were SKIPPED:",
+        "",
+        "Patch: /u01/patches/29699097/29708769/29851014",
+        "Reason: This patch is not applicable to this specified target type - \"rac_database\"                                      ",
+        "",
+        "Patch: /u01/patches/29699097/29708769/29401763",
+        "Reason: This patch is not applicable to this specified target type - \"rac_database\"                                      ",
+        "",
+        "",
+        "==Following patches were SUCCESSFULLY applied:",
+        "",
+        "Patch: /u01/patches/29699097/29708769/29834717",
+        "Log: /u02/app/oracle/product/19.4/db300/cfgtoollogs/opatchauto/core/opatch/opatch2019                                      -10-06_15-50-10PM_1.log",
+        "",
+        "Patch: /u01/patches/29699097/29708769/29850993",
+        "Log: /u02/app/oracle/product/19.4/db300/cfgtoollogs/opatchauto/core/opatch/opatch2019                                      -10-06_15-50-10PM_1.log",
+        "",
+        "",
+        "",
+        "OPatchauto session completed at Sun Oct  6 16:03:06 2019",
+        "Time taken to complete the session 16 minutes, 27 seconds"
+    ]
+}
+
+TASK [racdb_patch_apply : Restart cluster second node after applying RU] *********************
+included: /etc/ansible/roles/racdb_patch_apply/tasks/restsrt_cluster_secnode.yml for 192.168.5                                      6.102, 192.168.56.103
+
+TASK [racdb_patch_apply : Restart cluster stop] **********************************************
+changed: [192.168.56.103]
+
+TASK [racdb_patch_apply : Restart cluster start] *********************************************
+changed: [192.168.56.103]
+
+TASK [racdb_patch_apply : RAC Patching | Get the running database lists] *********************
+included: /etc/ansible/roles/racdb_patch_apply/tasks/list_dbs.yml for 192.168.56.102, 192.168.                                      56.103
+
+TASK [racdb_patch_apply : RAC Patching | get list of database names on host] *****************
+changed: [192.168.56.103]
+changed: [192.168.56.102]
+
+TASK [racdb_patch_apply : DEBUG1: dblist_check.results.stdout_lines by using loop] ***********
+ok: [192.168.56.102] => {
+    "dblist_check.stdout_lines": [
+        "eaymd1"
+    ]
+}
+
+TASK [racdb_patch_apply : RAC | get list of database names] **********************************
+changed: [192.168.56.102]
+
+TASK [racdb_patch_apply : debug] *************************************************************
+ok: [192.168.56.102] => {
+    "dbulist_check.stdout_lines": [
+        "eaymd"
+    ]
+}
+
+TASK [racdb_patch_apply : RAC Patching | Start databse with sqlplus] *************************
+included: /etc/ansible/roles/racdb_patch_apply/tasks/start_db_withsqlplus.yml for 192.168.56.1                                      02, 192.168.56.103
+
+TASK [racdb_patch_apply : RAC Patching | disable cluster database databases parameter] *******
+changed: [192.168.56.102] => (item=eaymd1)
+
+TASK [racdb_patch_apply : RAC Patching | stop cluster database using srvctl] *****************
+changed: [192.168.56.102] => (item=eaymd)
+
+TASK [racdb_patch_apply : RAC Patching | startup databases using sqlplus] ********************
+changed: [192.168.56.102] => (item=eaymd1)
+
+TASK [racdb_patch_apply : RAC Patching | open all pluggable databases] ***********************
+changed: [192.168.56.102] => (item=eaymd1)
+
+TASK [racdb_patch_apply : RAC Patching | Apply Datapatch CDB] ********************************
+included: /etc/ansible/roles/racdb_patch_apply/tasks/datapatch_dbs.yml for 192.168.56.102, 192                                      .168.56.103
+
+TASK [racdb_patch_apply : RAC Patching | get list of database names on host] *****************
+changed: [192.168.56.103]
+changed: [192.168.56.102]
+
+TASK [racdb_patch_apply : DEBUG1: dblist_check.results.stdout_lines by using loop] ***********
+ok: [192.168.56.102] => {
+    "dblist_check.stdout_lines": [
+        "eaymd1"
+    ]
+}
+
+TASK [racdb_patch_apply : RAC | get list of database names] **********************************
+changed: [192.168.56.102]
+
+TASK [racdb_patch_apply : debug] *************************************************************
+ok: [192.168.56.102] => {
+    "dbulist_check.stdout_lines": [
+        "eaymd"
+    ]
+}
+
+TASK [racdb_patch_apply : RAC Patching | Data Patch into the Database] ***********************
+changed: [192.168.56.102] => (item=eaymd1)
+
+TASK [racdb_patch_apply : debug] *************************************************************
+ok: [192.168.56.102] => {
+    "datapatch.results[0].stdout_lines": [
+        "SQL Patching tool version 19.4.0.0.0 Production on Sun Oct  6 16:05:50 2019",
+        "Copyright (c) 2012, 2019, Oracle.  All rights reserved.",
+        "",
+        "Log file for this invocation: /u02/app/oracle/cfgtoollogs/sqlpatch/sqlpatch_5091_2019                                      _10_06_16_05_50/sqlpatch_invocation.log",
+        "",
+        "Connecting to database...OK",
+        "Gathering database info...done",
+        "",
+        "Note:  Datapatch will only apply or rollback SQL fixes for PDBs",
+        "       that are in an open state, no patches will be applied to closed PDBs.",
+        "       Please refer to Note: Datapatch: Database 12c Post Patch SQL Automation",
+        "       (Doc ID 1585822.1)",
+        "",
+        "Bootstrapping registry and package to current versions...done",
+        "Determining current state...done",
+        "",
+        "Current state of interim SQL patches:",
+        "  No interim patches found",
+        "",
+        "Current state of release update SQL patches:",
+        "  Binary registry:",
+        "    19.4.0.0.0 Release_Update 190626171128: Installed",
+        "  PDB CDB$ROOT:",
+        "    Applied 19.4.0.0.0 Release_Update 190626171128 successfully on 06-OCT-19 04.02.53                                      .257495 PM",
+        "  PDB PDB$SEED:",
+        "    Applied 19.4.0.0.0 Release_Update 190626171128 successfully on 06-OCT-19 04.02.58                                      .804872 PM",
+        "  PDB PINKPDB:",
+        "    Rolled back to 19.3.0.0.0 Release_Update 190410122720 successfully on 06-OCT-19 0                                      2.06.41.449616 PM",
+        "",
+        "Adding patches to installation queue and performing prereq checks...done",
+        "Installation queue:",
+        "  For the following PDBs: CDB$ROOT PDB$SEED",
+        "    No interim patches need to be rolled back",
+        "    No release update patches need to be installed",
+        "    No interim patches need to be applied",
+        "  For the following PDBs: PINKPDB",
+        "    No interim patches need to be rolled back",
+        "    Patch 29834717 (Database Release Update : 19.4.0.0.190716 (29834717)):",
+        "      Apply from 19.3.0.0.0 Release_Update 190410122720 to 19.4.0.0.0 Release_Update                                       190626171128",
+        "    No interim patches need to be applied",
+        "",
+        "Installing patches...",
+        "Patch installation complete.  Total patches installed: 1",
+        "",
+        "Validating logfiles...done",
+        "Patch 29834717 apply (pdb PINKPDB): SUCCESS",
+        "  logfile: /u02/app/oracle/cfgtoollogs/sqlpatch/29834717/23016168/29834717_apply_EAYM                                      D_PINKPDB_2019Oct06_16_06_26.log (no errors)",
+        "SQL Patching tool complete on Sun Oct  6 16:08:21 2019"
+    ]
+}
+
+TASK [racdb_patch_apply : RAC Patching | Compile invalid database objects] *******************
+included: /etc/ansible/roles/racdb_patch_apply/tasks/compile_inv_obj.yml for 192.168.56.102, 1                                      92.168.56.103
+
+TASK [racdb_patch_apply : RAC Patching | compile invalid objects] ****************************
+changed: [192.168.56.102] => (item=eaymd1)
+
+TASK [racdb_patch_apply : debug] *************************************************************
+ok: [192.168.56.102] => {
+    "compile.results[0].stdout_lines": [
+        "",
+        "SQL*Plus: Release 19.0.0.0.0 - Production on Sun Oct 6 16:08:23 2019",
+        "Version 19.4.0.0.0",
+        "",
+        "Copyright (c) 1982, 2019, Oracle.  All rights reserved.",
+        "",
+        "",
+        "Connected to:",
+        "Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production",
+        "Version 19.4.0.0.0",
+        "",
+        "SQL> ",
+        "Session altered.",
+        "",
+        "",
+        "TIMESTAMP",
+        "--------------------------------------------------------------------------------",
+        "COMP_TIMESTAMP UTLRP_BGN\t      2019-10-06 16:08:23",
+        "",
+        "DOC>   The following PL/SQL block invokes UTL_RECOMP to recompile invalid",
+        "DOC>   objects in the database. Recompilation time is proportional to the",
+        "DOC>   number of invalid objects in the database, so this command may take",
+        "DOC>   a long time to execute on a database with a large number of invalid",
+        "DOC>   objects.",
+        "DOC>",
+        "DOC>   Use the following queries to track recompilation progress:",
+        "DOC>",
+        "DOC>   1. Query returning the number of invalid objects remaining. This",
+        "DOC>\t  number should decrease with time.",
+        "DOC>\t     SELECT COUNT(*) FROM obj$ WHERE status IN (4, 5, 6);",
+        "DOC>",
+        "DOC>   2. Query returning the number of objects compiled so far. This number",
+        "DOC>\t  should increase with time.",
+        "DOC>\t     SELECT COUNT(*) FROM UTL_RECOMP_COMPILED;",
+        "DOC>",
+        "DOC>   This script automatically chooses serial or parallel recompilation",
+        "DOC>   based on the number of CPUs available (parameter cpu_count) multiplied",
+        "DOC>   by the number of threads per CPU (parameter parallel_threads_per_cpu).",
+        "DOC>   On RAC, this number is added across all RAC nodes.",
+        "DOC>",
+        "DOC>   UTL_RECOMP uses DBMS_SCHEDULER to create jobs for parallel",
+        "DOC>   recompilation. Jobs are created without instance affinity so that they",
+        "DOC>   can migrate across RAC nodes. Use the following queries to verify",
+        "DOC>   whether UTL_RECOMP jobs are being created and run correctly:",
+        "DOC>",
+        "DOC>   1. Query showing jobs created by UTL_RECOMP",
+        "DOC>\t     SELECT job_name FROM dba_scheduler_jobs",
+        "DOC>\t\tWHERE job_name like 'UTL_RECOMP_SLAVE_%';",
+        "DOC>",
+        "DOC>   2. Query showing UTL_RECOMP jobs that are running",
+        "DOC>\t     SELECT job_name FROM dba_scheduler_running_jobs",
+        "DOC>\t\tWHERE job_name like 'UTL_RECOMP_SLAVE_%';",
+        "DOC>#",
+        "",
+        "PL/SQL procedure successfully completed.",
+        "",
+        "",
+        "TIMESTAMP",
+        "--------------------------------------------------------------------------------",
+        "COMP_TIMESTAMP UTLRP_END\t      2019-10-06 16:08:25",
+        "",
+        "DOC> The following query reports the number of invalid objects.",
+        "DOC>",
+        "DOC> If the number is higher than expected, please examine the error",
+        "DOC> messages reported with each object (using SHOW ERRORS) to see if they",
+        "DOC> point to system misconfiguration or resource constraints that must be",
+        "DOC> fixed before attempting to recompile these objects.",
+        "DOC>#",
+        "",
+        "OBJECTS WITH ERRORS",
+        "-------------------",
+        "\t\t  0",
+        "",
+        "DOC> The following query reports the number of exceptions caught during",
+        "DOC> recompilation. If this number is non-zero, please query the error",
+        "DOC> messages in the table UTL_RECOMP_ERRORS to see if any of these errors",
+        "DOC> are due to misconfiguration or resource constraints that must be",
+        "DOC> fixed before objects can compile successfully.",
+        "DOC> Note: Typical compilation errors (due to coding errors) are not",
+        "DOC>\t   logged into this table: they go into DBA_ERRORS instead.",
+        "DOC>#",
+        "",
+        "ERRORS DURING RECOMPILATION",
+        "---------------------------",
+        "\t\t\t  0",
+        "",
+        "",
+        "Function created.",
+        "",
+        "",
+        "PL/SQL procedure successfully completed.",
+        "",
+        "",
+        "Function dropped.",
+        "",
+        "",
+        "PL/SQL procedure successfully completed.",
+        "",
+        "SQL> Disconnected from Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Pr                                      oduction",
+        "Version 19.4.0.0.0"
+    ]
+}
+
+TASK [racdb_patch_apply : RAC Patching | Start databse with srvctl] **************************
+included: /etc/ansible/roles/racdb_patch_apply/tasks/start_db_withcrs.yml for 192.168.56.102,                                       192.168.56.103
+
+TASK [racdb_patch_apply : RAC Patching | enable cluster database databases parameter] ********
+changed: [192.168.56.102] => (item=eaymd1)
+
+TASK [racdb_patch_apply : RAC Patching | stop databases using sqlplus] ***********************
+changed: [192.168.56.102] => (item=eaymd1)
+
+TASK [racdb_patch_apply : RAC Patching | Start cluster database using srvctl] ****************
+changed: [192.168.56.102] => (item=eaymd)
+
+TASK [racdb_patch_apply : RAC Patching | verify applied patch] *******************************
+included: /etc/ansible/roles/racdb_patch_apply/tasks/verify_patch_apply.yml for 192.168.56.102                                      , 192.168.56.103
+
+TASK [racdb_patch_apply : RAC Patching | Patch Information for grid home after apply(opatchaut                                      o)] ***
+changed: [192.168.56.103]
+changed: [192.168.56.102]
+
+TASK [racdb_patch_apply : debug] *************************************************************
+ok: [192.168.56.102] => {
+    "opatch_lspatches_gh.stdout_lines": [
+        "29851014;ACFS RELEASE UPDATE 19.4.0.0.0 (29851014)",
+        "29850993;OCW RELEASE UPDATE 19.4.0.0.0 (29850993)",
+        "29834717;Database Release Update : 19.4.0.0.190716 (29834717)",
+        "29401763;TOMCAT RELEASE UPDATE 19.0.0.0.0 (29401763)",
+        "",
+        "OPatch succeeded."
+    ]
+}
+ok: [192.168.56.103] => {
+    "opatch_lspatches_gh.stdout_lines": [
+        "29851014;ACFS RELEASE UPDATE 19.4.0.0.0 (29851014)",
+        "29850993;OCW RELEASE UPDATE 19.4.0.0.0 (29850993)",
+        "29834717;Database Release Update : 19.4.0.0.190716 (29834717)",
+        "29401763;TOMCAT RELEASE UPDATE 19.0.0.0.0 (29401763)",
+        "",
+        "OPatch succeeded."
+    ]
+}
+
+TASK [racdb_patch_apply : RAC Patching | Patch Information for database home (opatchauto)] ***
+changed: [192.168.56.103]
+changed: [192.168.56.102]
+
+TASK [racdb_patch_apply : debug] *************************************************************
+ok: [192.168.56.102] => {
+    "opatch_lspatches_oh.stdout_lines": [
+        "29850993;OCW RELEASE UPDATE 19.4.0.0.0 (29850993)",
+        "29834717;Database Release Update : 19.4.0.0.190716 (29834717)",
+        "",
+        "OPatch succeeded."
+    ]
+}
+ok: [192.168.56.103] => {
+    "opatch_lspatches_oh.stdout_lines": [
+        "29850993;OCW RELEASE UPDATE 19.4.0.0.0 (29850993)",
+        "29834717;Database Release Update : 19.4.0.0.190716 (29834717)",
+        "",
+        "OPatch succeeded."
+    ]
+}
+
+TASK [racdb_patch_apply : Remove stage directory] ********************************************
+changed: [192.168.56.102] => (item=/u02/stage)
+changed: [192.168.56.103] => (item=/u02/stage)
+
+TASK [racdb_patch_apply : display post GI RU message] ****************************************
+ok: [192.168.56.102] => {
+    "msg": [
+        "This completed below task for RAC database at 2019-10-06T04:05:06Z:",
+        "Oracle Database Patch - GI Release Update of Oracle 19.3 to 19.4 task completed successfully",
+        "END OF ALL: git repository of \"gi_ru_1903_1904\" will be shared"
+    ]
+}
+ok: [192.168.56.103] => {
+    "msg": [
+        "This completed below task for RAC database at 2019-10-06T04:05:05Z:",
+        "Oracle Database Patch - GI Release Update of Oracle 19.3 to 19.4 task completed succesfully",
+        "END OF ALL: git repository of \"gi_ru_1903_1904\" will be shared"
+    ]
+}
+
+PLAY RECAP ***********************************************************************************
+192.168.56.102             : ok=65   changed=38   unreachable=0    failed=0
+192.168.56.103             : ok=48   changed=28   unreachable=0    failed=0
