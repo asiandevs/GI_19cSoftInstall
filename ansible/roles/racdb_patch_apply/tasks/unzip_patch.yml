@@ -1,0 +1,7 @@
+---
+  - name: RAC Patching | unzip required patch file
+    when: ('ora-x1' in group_names) or ('ora-x2' in group_names)
+    remote_user: "{{ root_user }}"
+    unarchive: src={{ patch_stage_dir }}/p29699097_190000_Linux-x86-64.zip dest={{ patch_unzipdir }} owner={{ grid_user }} group={{ oracle_install_group }} mode=0775 remote_src=no
+
+

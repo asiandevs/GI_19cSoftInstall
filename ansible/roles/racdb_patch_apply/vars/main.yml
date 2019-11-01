@@ -1,0 +1,19 @@
+---
+
+oracle_user:                     "oracle"
+oracle_install_group:            "oinstall"
+oraInventory:                    /u02/app/oraInventory
+patch_unzipdir:                  "/u01/patches"
+patch_dir:                       "/u01/patches/{{ patchid }}"
+patcha_dir:                      "/u01/patches/{{ patchid }}/{{ gipatchid }}"
+patchid:                         "29699097"
+gipatchid:                       "29708769"
+tmp_dir:                         "/u02/app/temp"
+logdir:                          "/tmp/{{ patchid }}"
+oracle_home:                     "/u02/app/oracle/product/19.4/db300"
+grid_home:                       "/u02/app/19.4/grid"
+patch_stage_dir:                 "/u01/stage"
+stage_dir:                       "/u02/stage"
+root_user:                       "root"
+grid_user:                       "grid"
+date:                            "{{ lookup('pipe', 'date +%Y%m%d-%H%M') }}"

@@ -1,0 +1,17 @@
+---
+  - name: RAC Patching | check inventory for grid home (opatchauto)
+    when: inventory_hostname in groups['dbservers']
+    remote_user: "{{root_user }}"
+    become: Yes
+    become_user: "{{ grid_user }}"
+    shell: "export GRID_HOME={{ grid_home }}; export PATH=$GRID_HOME/bin:$GRID_HOME/OPatch:$PATH; {{ grid_home }}/OPatch/opatch lsinventory -detail -oh {{ grid_home }} > {{ logdir }}/CheckOpatchLsinventoryGridhome.log 2>&1"
+    register: opatch_lsinventory_gh
+
+  - name: RAC Patching | check inventory for oracle home (opatchauto)
+    when: inventory_hostname in groups['dbservers']
+    remote_user: "{{root_user }}"
+    become: Yes
+    become_user: "{{ oracle_user }}"
+    shell: "export ORACLE_HOME={{ oracle_home }}; export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH; {{ oracle_home }}/OPatch/opatch lsinventory -detail -oh {{ oracle_home }} > {{ logdir }}/CheckOpatchLsinventoryOraclehome.log 2>&1"
+    register: opatch_lsinventory_oh
+

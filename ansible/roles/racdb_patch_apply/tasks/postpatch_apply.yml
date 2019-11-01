@@ -1,0 +1,25 @@
+---
+#############################################
+# Summary Steps:
+#  1) Apply Data Patch
+#  2) compile invalid database objects
+#  2) Validate applied patches or RU
+#############################################
+  - name: RAC Patching | Get the running database lists
+    include_tasks: list_dbs.yml
+
+  - name: RAC Patching | Start databse with sqlplus 
+    include_tasks: start_db_withsqlplus.yml
+
+  - name: RAC Patching | Apply Datapatch CDB 
+    include_tasks: datapatch_dbs.yml
+
+  - name: RAC Patching | Compile invalid database objects 
+    include_tasks: compile_inv_obj.yml
+
+  - name: RAC Patching | Start databse with srvctl
+    include_tasks: start_db_withcrs.yml
+
+  - name: RAC Patching | verify applied patch
+    include_tasks: verify_patch_apply.yml
+

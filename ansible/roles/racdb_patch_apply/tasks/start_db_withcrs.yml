@@ -1,0 +1,21 @@
+---
+  - name: RAC Patching | enable cluster database databases parameter
+    when: inventory_hostname in groups['ora-x1']
+    remote_user: "{{ oracle_user }}"
+    shell: export ORACLE_HOME={{ oracle_home }}; export PATH=$ORACLE_HOME/bin; export ORACLE_SID={{ item }}; echo "alter system set cluster_database=true scope=spfile;" | sqlplus / as sysdba
+    with_items: "{{ dblist_check.stdout_lines }}"
+
+  - name: RAC Patching | stop databases using sqlplus
+    when: inventory_hostname in groups['ora-x1']
+    remote_user: "{{ oracle_user }}"
+    shell: export ORACLE_HOME={{ oracle_home }}; export PATH=$ORACLE_HOME/bin; export ORACLE_SID={{ item }}; echo "shutdown immediate;" | sqlplus / as sysdba
+    with_items: "{{ dblist_check.stdout_lines }}"
+    ignore_errors: True
+
+  - name: RAC Patching | Start cluster database using srvctl
+    when: inventory_hostname in groups['ora-x1']
+    shell: export ORACLE_HOME={{ oracle_home }}; export ORACLE_SID={{ item }}; export PATH=$PATH:$ORACLE_HOME/bin; srvctl start database -d {{ item }}
+    remote_user: "{{ oracle_user }}"
+    with_items: "{{ dbulist_check.stdout_lines }}"
+    ignore_errors: True
+

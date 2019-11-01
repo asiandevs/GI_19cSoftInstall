@@ -1,0 +1,15 @@
+---
+  - name: RAC Patching | compile invalid objects
+    when: inventory_hostname in groups['ora-x1']
+    shell: export ORACLE_HOME={{ oracle_home }}; export PATH=$ORACLE_HOME/bin; export ORACLE_SID={{ item }}; echo "@utlrp.sql;" | sqlplus / as sysdba
+    remote_user: "{{ oracle_user }}"
+    register: compile
+    args:
+      chdir: "{{ oracle_home }}/rdbms/admin"
+    run_once: true
+    with_items: "{{ dblist_check.stdout_lines }}"
+    ignore_errors: true
+
+  - debug: var=compile.results[0].stdout_lines
+    when: inventory_hostname in groups['ora-x1']
+

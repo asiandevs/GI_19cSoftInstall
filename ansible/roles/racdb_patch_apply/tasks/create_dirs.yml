@@ -1,0 +1,25 @@
+---
+  - name: RAC Patching | Create required directories
+    when: inventory_hostname in groups['dbservers']
+    remote_user: "{{ root_user }}"
+    file:
+      path="{{ item }}"
+      state=directory
+      owner="{{ grid_user }}"
+      group="{{ oracle_install_group }}"
+      mode=0775
+      recurse=yes
+    with_items:
+      - "{{ stage_dir }}"
+      - "{{ patch_dir }}"
+
+  - name: RAC Patching | Create LogFile Directory
+    when: ('ora-x1' in group_names) or ('ora-x2' in group_names)
+    remote_user: "{{ root_user }}"
+    file:
+     path: /tmp/{{ patchid}}
+     state: directory
+     owner: "{{ oracle_user }}"
+     group: "{{ oracle_install_group }}"
+     mode: 0777
+

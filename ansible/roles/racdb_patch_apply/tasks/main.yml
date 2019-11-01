@@ -1,0 +1,51 @@
+---
+######################################################################################
+# Summary Steps:
+# Assumption:
+# - required patches are downloaded and staged [ex: this case patch stage directory]
+# - This case we are patching non-rolling and GI home and RAC home separately
+#  1) execute pre-patch apply tasks
+#  2) Apply GI RU 
+#######################################################################################
+  - name: display pre GI RU message
+    debug:
+      msg:
+        - 'This playbook is for Oracle Database Patch - GI Release Update of Oracle 19.3 to 19.4 started at {{ansible_date_time.iso8601}}:'
+
+  - name: Run pre-tasks before apply
+    include: prepatch_apply.yml
+    tags: pre_tasks_before_apply
+
+  - name: RAC Patching | RU to grid home and db home on first node (opatchauto)
+    include_tasks: ru_frstnode_gindb.yml
+
+  - name: Restart cluster first node after applying RU
+    include_tasks: restsrt_cluster_frstnode.yml
+
+  - name: RAC Patching | Pause after GI patching completion on first node
+    pause: prompt="Verify First Node - Everything running OK or NOT." minutes=10
+
+  - name: RAC Patching | RU to grid home and db home on second node (opatchauto)
+    include_tasks: ru_secnode_gindb.yml
+
+  - name: Restart cluster second node after applying RU
+    include_tasks: restsrt_cluster_secnode.yml
+
+  - name: Run post-tasks after patch
+    include: postpatch_apply.yml
+    tags: post_tasks_after_apply
+
+  - name: Remove stage directory
+    remote_user: "{{ root_user }}"
+    file:
+      path: "{{ item }}"
+      state: absent
+    with_items:
+      - "{{ stage_dir }}"
+
+  - name: display post GI RU message
+    debug:
+      msg:
+        - 'This completed below task for RAC database at {{ansible_date_time.iso8601}}:'
+        - 'Oracle Database Patch - GI Release Update of Oracle 19.3 to 19.4 task completed successfully'
+        - 'END OF ALL: git repository of "gi_ru_1903_1904" will be shared'

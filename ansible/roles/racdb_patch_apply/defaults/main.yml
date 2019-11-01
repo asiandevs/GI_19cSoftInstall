@@ -1,0 +1,21 @@
+---
+
+oracle_user:             "oracle"
+oracle_install_group:            "oinstall"
+patch_dir:                       "/u01/patches"
+patchid:                         "28828717"
+tmp_dir:                         "/u01/app/temp"
+logdir:                          "/tmp/{{ patchid }}"
+oracle_home:                     "/u02/app/oracle/product/18.3.0/dbhome_1"
+grid_home:                       "/u02/app/18.3.0/grid"
+stage_dir:                       "/u01/stage"
+root_user:                       "root"
+grid_user:                       "grid"
+
+envoh:
+  ORACLE_HOME: "{{ oracle_home }}"
+  PATH: "{{ ORACLE_HOME }}/bin:{{ ORACLE_HOME }}/OPatch:$PATH:/bin:/usr/bin::/usr/ccs/bin"
+
+envgh:
+  GRID_HOME: "{{ grid_home }}"
+  PATH: "{{ grid_home }}/bin:{{ grid_home }}/OPatch:$PATH:/bin:/usr/bin::/usr/ccs/bin"

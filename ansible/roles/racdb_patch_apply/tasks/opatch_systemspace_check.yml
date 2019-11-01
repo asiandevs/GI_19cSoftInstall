@@ -1,0 +1,26 @@
+---
+  - name: RAC Patching | create opatch system space check files for grid home
+    when: inventory_hostname in groups['dbservers']
+    remote_user: "{{ root_user }}"
+    template: src=templates/patch_list_gihome.txt.j2 dest={{ stage_dir }}/patch_list_gihome.txt owner="{{ grid_user }}" group="{{ oracle_install_group }}" mode=0775
+
+  - name: RAC Patching | create opatch system space check files for oracle home
+    when: inventory_hostname in groups['dbservers']
+    remote_user: "{{ root_user }}"
+    template: src=templates/patch_list_dbhome.txt.j2 dest={{ stage_dir }}/patch_list_dbhome.txt owner="{{ oracle_user }}" group="{{ oracle_install_group }}" mode=0775
+
+  - name: RAC Patching | OPatch SystemSpace Check (grid home)
+    environment: "{{ envgh }}"
+    shell: "export GRID_HOME={{ grid_home }}; export PATH=$GRID_HOME/bin:$GRID_HOME/OPatch:$PATH; opatch prereq CheckSystemSpace -phBaseFile {{ stage_dir }}/patch_list_gihome.txt > {{ logdir }}/CheckSpaceGridhome.log 2>&1"
+    remote_user: "{{root_user }}"
+    become: Yes
+    become_user: "{{ grid_user }}"
+    register: opatch_sysspace_ghs
+
+  - name: RAC Patching | OPatch SystemSpace Check (oracle home)
+    shell: "export ORACLE_HOME={{ oracle_home }}; export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH; opatch prereq CheckSystemSpace -phBaseFile {{ stage_dir }}/patch_list_dbhome.txt > {{ logdir }}/CheckSpaceOraclehome.log 2>&1"
+    remote_user: "{{root_user }}"
+    become: Yes
+    become_user: "{{ oracle_user }}"
+    register: opatch_sysspace_ohs
+

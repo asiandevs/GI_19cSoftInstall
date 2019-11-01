@@ -1,0 +1,24 @@
+---
+  - name: RAC Patching | Run OPatch Conflict Check (grid home)
+    when: ('ora-x1' in group_names) or ('ora-x2' in group_names)
+    shell: "export GRID_HOME={{ grid_home }}; export PATH=$GRID_HOME/bin:$GRID_HOME/OPatch:$PATH; {{ grid_home }}/OPatch/opatch prereq CheckConflictAgainstOHWithDetail -phBaseDir {{ patcha_dir }}/{{ item }} > {{ logdir }}/CheckConflictAgainstgrid.log 2>&1"
+    remote_user: "{{root_user }}"
+    become: Yes
+    become_user: "{{ grid_user }}"
+    register: opatch_conflicts_gh
+    with_items:
+      - 29834717
+      - 29850993
+      - 29851014
+      - 29401763
+
+  - name: RAC Patching | Run OPatch Conflict Check (oracle home)
+    shell: "export ORACLE_HOME={{ oracle_home }}; export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH; {{ oracle_home }}/OPatch/opatch prereq CheckConflictAgainstOHWithDetail -phBaseDir {{ patcha_dir }}/{{ item }} > {{ logdir }}/CheckConflictAgainstoraclehome.log 2>&1"
+    remote_user: "{{root_user }}"
+    become: Yes
+    become_user: "{{ oracle_user }}"
+    register: opatch_conflicts_oh
+    with_items:
+      - 29834717
+      - 29850993
+

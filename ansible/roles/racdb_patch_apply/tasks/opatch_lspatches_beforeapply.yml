@@ -1,0 +1,25 @@
+---
+  - name: RAC Patching | Patch Information for grid home (opatchauto)
+    when: ('ora-x1' in group_names) or ('ora-x2' in group_names)
+    remote_user: "{{root_user }}"
+    become: Yes
+    become_user: "{{ grid_user }}"
+    shell: "export GRID_HOME={{ grid_home }}; export PATH=$GRID_HOME/bin:$GRID_HOME/OPatch:$PATH; {{ grid_home }}/OPatch/opatch lspatches"
+    tags: pohinfapply_gh
+    register: opatch_lspatches_gh
+
+  - debug: var=opatch_lspatches_gh.stdout_lines
+    when: ('ora-x1' in group_names) or ('ora-x2' in group_names)
+
+  - name: RAC Patching | Patch Information for database home (opatchauto)
+    when: ('ora-x1' in group_names) or ('ora-x2' in group_names)
+    remote_user: "{{root_user }}"
+    become: Yes
+    become_user: "{{ oracle_user }}"
+    shell: "export ORACLE_HOME={{ oracle_home }}; export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH; {{ oracle_home }}/OPatch/opatch lspatches"
+    tags: pohinfoapply_oh
+    register: opatch_lspatches_oh
+
+  - debug: var=opatch_lspatches_oh.stdout_lines
+    when: ('ora-x1' in group_names) or ('ora-x2' in group_names)
+

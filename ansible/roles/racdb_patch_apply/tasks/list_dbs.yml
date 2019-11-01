@@ -1,0 +1,22 @@
+---
+  - name: RAC Patching | get list of database names on host
+    shell: cat /etc/oratab|grep {{ oracle_home }}|egrep ':N|:Y'|grep -v \*|cut -f1 -d':'
+    register: dblist_check
+    ignore_errors: True
+
+  - name: "DEBUG1: dblist_check.results.stdout_lines by using loop"
+    when: inventory_hostname in groups['ora-x1']
+    debug:
+      var: dblist_check.stdout_lines
+
+  - name: RAC | get list of database names
+    when: inventory_hostname in groups['ora-x1']
+    remote_user: "{{ oracle_user }}"
+    shell: export ORACLE_HOME={{ oracle_home }}; export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH; srvctl config database
+    become_user: "{{ oracle_user }}"
+    register: dbulist_check
+    ignore_errors: True
+
+  - debug: var=dbulist_check.stdout_lines
+    when: inventory_hostname in groups['ora-x1']
+

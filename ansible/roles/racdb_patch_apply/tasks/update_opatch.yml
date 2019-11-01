@@ -1,0 +1,30 @@
+---
+  - name: RAC Patching | Backup opatch file from grid home
+    when: ('ora-x1' in group_names) or ('ora-x2' in group_names)
+    remote_user: "{{ root_user }}"
+    shell: mv "{{ grid_home }}/OPatch" "{{ grid_home }}/OPatch{{ date }}"
+    ignore_errors: true
+
+  - name: RAC Patching | Backup opatch file from oracle home
+    when: ('ora-x1' in group_names) or ('ora-x2' in group_names)
+    remote_user: "{{ root_user }}"
+    shell: mv "{{ oracle_home }}/OPatch" "{{ oracle_home }}/OPatch{{ date }}"
+    ignore_errors: true
+
+  - name: RAC Patching | Update required opatch utility in grid home
+    when: ('ora-x1' in group_names) or ('ora-x2' in group_names)
+    remote_user: "{{ root_user }}"
+    unarchive: src={{ patch_stage_dir }}/p6880880_180000_Linux-x86-64.zip dest={{ grid_home }} remote_src=no
+
+  - name: RAC Patching | Update opatch ownership in grid home
+    remote_user: "{{ root_user }}"
+    file: dest={{ grid_home }}/OPatch owner={{ grid_user }} group={{ oracle_install_group }} mode=0775 recurse=yes
+
+  - name: RAC Patching | Update required opatch utility in oracle home
+    remote_user: "{{ root_user }}"
+    unarchive: src={{ patch_stage_dir }}/p6880880_180000_Linux-x86-64.zip dest={{ oracle_home }} remote_src=no
+
+  - name: RAC Patching | Update opatch ownership in oracle home
+    remote_user: "{{ root_user }}"
+    file: dest={{ oracle_home }}/OPatch owner={{ oracle_user }} group={{ oracle_install_group }} mode=0775 recurse=yes
+

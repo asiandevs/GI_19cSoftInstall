@@ -1,0 +1,27 @@
+---
+  - name: RAC Patching | disable cluster database databases parameter
+    when: inventory_hostname in groups['ora-x1']
+    remote_user: "{{ oracle_user }}"
+    shell: export ORACLE_HOME={{ oracle_home }}; export PATH=$ORACLE_HOME/bin; export ORACLE_SID={{ item }}; echo "alter system set cluster_database=false scope=spfile;" | sqlplus / as sysdba
+    with_items: "{{ dblist_check.stdout_lines }}"
+
+  - name: RAC Patching | stop cluster database using srvctl
+    when: inventory_hostname in groups['ora-x1']
+    shell: export ORACLE_HOME={{ oracle_home }}; export ORACLE_SID={{ item }}; export PATH=$PATH:$ORACLE_HOME/bin; srvctl stop database -d {{ item }}
+    remote_user: "{{ oracle_user }}"
+    with_items: "{{ dbulist_check.stdout_lines }}"
+    ignore_errors: True
+
+  - name: RAC Patching | startup databases using sqlplus
+    when: inventory_hostname in groups['ora-x1']
+    remote_user: "{{ oracle_user }}"
+    shell: export ORACLE_HOME={{ oracle_home }}; export PATH=$ORACLE_HOME/bin; export ORACLE_SID={{ item }}; echo "startup;" | sqlplus / as sysdba
+    with_items: "{{ dblist_check.stdout_lines }}"
+
+  - name: RAC Patching | open all pluggable databases
+    when: inventory_hostname in groups['ora-x1']
+    remote_user: "{{ oracle_user }}"
+    shell: export ORACLE_HOME={{ oracle_home }}; export PATH=$ORACLE_HOME/bin; export ORACLE_SID={{ item }}; echo "alter pluggable database all open;" | sqlplus / as sysdba
+    tags: ['datapath_apply']
+    with_items: "{{ dblist_check.stdout_lines }}"
+

@@ -1,0 +1,19 @@
+---
+  - name: RAC Patching | RU to grid home first node (opatchauto)
+    when: inventory_hostname in groups['ora-x1']
+    remote_user: "{{ root_user }}"
+    shell: "export GRID_HOME={{ grid_home }}; export PATH=$GRID_HOME/bin:$GRID_HOME/OPatch:$PATH; {{ grid_home }}/OPatch/opatchauto apply {{ patch_dir }}/{{ gipatchid }} -oh {{ grid_home }}"
+    register: patch_apply_gh_first
+
+  - debug: var=patch_apply_gh_first.stdout_lines
+    when: inventory_hostname in groups['ora-x1']
+
+  - name: RAC Patching | RU to database home first node (opatchauto)
+    when: inventory_hostname in groups['ora-x1']
+    remote_user: "{{ root_user }}"
+    shell: "export ORACLE_HOME={{ oracle_home }}; export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH; {{ oracle_home }}/OPatch/opatchauto apply {{ patch_dir }}/{{ gipatchid }} -oh {{ oracle_home }}"
+    register: patch_apply_oh_first
+
+  - debug: var=patch_apply_oh_first.stdout_lines
+    when: inventory_hostname in groups['ora-x1']
+

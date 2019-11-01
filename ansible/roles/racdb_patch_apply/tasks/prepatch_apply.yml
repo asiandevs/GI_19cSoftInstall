@@ -1,0 +1,26 @@
+---
+######################################################################################
+# Summary Steps:
+# Assumption:
+# - required patches are downloaded and staged [ex: this case patch stage directory]
+# - This case we are patching non-rolling and GI home and RAC home separately
+# i)   Update  OPatch utility version
+# ii)  Validation of Oracle Inventory
+# iii) Unzip the patch zip file
+# iv)  OPatch Conflict Check
+# v)   OPatch SystemSpace Check
+#######################################################################################
+- name: Preparation tasks for apply  Oracle GI RU
+  block:
+    - import_tasks:     create_dirs.yml
+    - import_tasks:     update_opatch.yml
+    - import_tasks:     unzip_patch.yml
+    - import_tasks:     opatch_conflict_check.yml
+    - import_tasks:     opatch_systemspace_check.yml
+    - import_tasks:     opatch_inventory_check.yml
+    - import_tasks:     opatch_lspatches_beforeapply.yml
+  become:               yes
+  become_user:          root
+  tags:
+    - ru_prepatch
+

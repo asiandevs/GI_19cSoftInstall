@@ -1,0 +1,14 @@
+---
+  - name: Restart cluster stop
+    when: inventory_hostname in groups['ora-x2']
+    remote_user: "{{ root_user }}"
+    shell: "{{ grid_home }}/bin/crsctl stop cluster"
+    register: cluster_stop
+
+  - name: Restart cluster start
+    when: inventory_hostname in groups['ora-x2']
+    remote_user: "{{ root_user }}"
+    become: yes
+    shell: "{{ grid_home }}/bin/crsctl start cluster"
+    register: cluster_stop
+

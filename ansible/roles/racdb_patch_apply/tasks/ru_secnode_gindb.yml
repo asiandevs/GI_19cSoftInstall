@@ -1,0 +1,26 @@
+---
+  - name: RAC Patching | RU to grid home second node (opatchauto)
+    when: inventory_hostname in groups['ora-x2']
+    remote_user: "{{ root_user }}"
+    shell: "export GRID_HOME={{ grid_home }}; export PATH=$GRID_HOME/bin:$GRID_HOME/OPatch:$PATH; {{ grid_home }}/OPatch/opatchauto apply {{ patch_dir }}/{{ gipatchid }} -oh {{ grid_home }} -nonrolling"
+    register: patch_apply_gh_second
+
+  - debug: var=patch_apply_gh_second.stdout_lines
+    when: inventory_hostname in groups['ora-x2']
+
+  - name: Avoid issue OPATCHAUTO-68061 and opatchauto failed with error code 42
+    when: inventory_hostname in groups['ora-x2']
+    remote_user: "{{ root_user }}"
+    become: yes
+    shell: "chmod 660 {{ oraInventory }}/ContentsXML/oui-patch.xml"
+    register: cluster_stop
+
+  - name: RAC Patching | RU to database home second node (opatchauto)
+    when: inventory_hostname in groups['ora-x2']
+    remote_user: "{{ root_user }}"
+    shell: "export ORACLE_HOME={{ oracle_home }}; export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH; {{ oracle_home }}/OPatch/opatchauto apply {{ patch_dir }}/{{ gipatchid }} -oh {{ oracle_home }}"
+    register: patch_apply_oh_second
+
+  - debug: var=patch_apply_oh_second.stdout_lines
+    when: inventory_hostname in groups['ora-x2']
+
